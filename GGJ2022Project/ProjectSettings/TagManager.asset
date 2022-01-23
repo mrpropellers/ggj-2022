@@ -38,6 +38,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 661140391
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Foreground
+    uniqueID: 4153966149
+    locked: 0
+  - name: Collider Debug
+    uniqueID: 679577803
     locked: 0
