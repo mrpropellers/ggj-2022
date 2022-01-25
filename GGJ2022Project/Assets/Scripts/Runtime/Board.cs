@@ -29,9 +29,13 @@ namespace GGJ
         [SerializeField]
         public UnityEvent<Board, BoardSpace> OnBoardSpaceConstructed;
 
+        public Grid Grid => m_Grid;
+        public int Width => m_BoardBounds.size.x;
+        public int Height => m_BoardBounds.size.y;
         public IEnumerable<BoardSpace> AllSpaces => m_BoardSpaces;
         public bool IsValid => m_BoardSpaces != null && m_Grid != null;
         public bool IsConstructing { get; private set; }
+        public bool NeedsInitialization => !IsValid && !IsConstructing;
 
         // Determine the initial state of a space on the board, based on what kinds of tiles
         // are present on the Grid for that space
@@ -153,6 +157,19 @@ namespace GGJ
 
         }
 
+        int ToIndex(Vector3Int coordinates)
+        {
+            var i = coordinates.x - m_BoardBounds.xMin;
+            var j = coordinates.y - m_BoardBounds.yMin;
+            if (i < 0 || i >= Width || j < 0 || j >= Height)
+            {
+                Debug.LogWarning($"Attempted to compute an out-of-bounds index ({coordinates})");
+                return -1;
+            }
+            return QuickMaths.IJToIndex(Width,
+                coordinates.x - m_BoardBounds.xMin, coordinates.y - m_BoardBounds.yMin);
+        }
+
         public Vector3 GetWorldCoordinates(BoardSpace space)
         {
             if (m_Grid == null)
@@ -169,6 +186,20 @@ namespace GGJ
 
             var position = new Vector3Int(space.Coordinates.x, space.Coordinates.y, 0);
             return m_Grid.GetCellCenterWorld(position);
+        }
+
+        public bool TryGetSpace(Vector3 position, out BoardSpace space)
+        {
+            var cellPosition = m_Grid.WorldToCell(position);
+            var index = ToIndex(cellPosition);
+            if (index == -1)
+            {
+                space = null;
+                return false;
+            }
+
+            space = m_BoardSpaces[index];
+            return true;
         }
     }
 }
