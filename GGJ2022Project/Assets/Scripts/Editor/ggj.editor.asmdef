@@ -1,7 +1,10 @@
 {
     "name": "GGJ Editor",
     "rootNamespace": "GGJ.Editor",
-    "references": [],
+    "references": [
+        "GUID:4e63f1d22ff0bbb40a058efbcecebe17",
+        "GUID:478a2357cc57436488a56e564b08d223"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

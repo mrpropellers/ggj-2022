@@ -3,7 +3,7 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 
 [CustomEditor(typeof(Destructible))]
-public class DestructibleEditor : Editor
+public class DestructibleEditor : UnityEditor.Editor
 {
 	public Destructible tile
 	{
