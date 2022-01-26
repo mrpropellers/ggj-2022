@@ -1,7 +1,9 @@
 {
     "name": "GGJ",
     "rootNamespace": "GGJ",
-    "references": [],
+    "references": [
+        "GUID:75469ad4d38634e559750d17036d5f7c"
+    ],
     "includePlatforms": [
         "Editor",
         "LinuxStandalone64",

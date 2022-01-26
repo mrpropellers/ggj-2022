@@ -39,7 +39,7 @@ namespace GGJ
 
         // Determine the initial state of a space on the board, based on what kinds of tiles
         // are present on the Grid for that space
-        IBoardSpaceState ConstructBoardSpaceState(IEnumerable<TileBase> tiles)
+        BoardSpace.Flavor DetermineBoardSpaceType(IEnumerable<TileBase> tiles)
         {
             var hasATile = false;
             var isBlocked = false;
@@ -62,21 +62,21 @@ namespace GGJ
 
             if (!hasATile)
             {
-                return new Null();
+                return BoardSpace.Flavor.Null;
             }
             if (isBlocked)
             {
-                return new Blocked();
+                return BoardSpace.Flavor.Wall;
             }
 
             if (hasMapTile)
             {
-                return new Empty();
+                return BoardSpace.Flavor.Normal;
             }
 
             Debug.LogError($"{name} found a tile stack with no recognizable tiles:\n" +
                 $"{tiles.First()}");
-            return new Unknown();
+            return BoardSpace.Flavor.Unknown;
         }
 
         // Pulls all of the tilemaps out of the Board's associated Grid and converts them
@@ -132,8 +132,8 @@ namespace GGJ
                         //tilesTemp.Add(allTiles[i][x][y]);
                     }
 
-                    var state = ConstructBoardSpaceState(tileStack);
-                    var space = new BoardSpace(x, y, tileStack, state);
+                    var flavor = DetermineBoardSpaceType(tileStack);
+                    var space = new BoardSpace(this, x, y, flavor);
                     var index = QuickMaths.IJToIndex(numColumns, i, j);
                     m_BoardSpaces[index] = space;
 
@@ -188,9 +188,9 @@ namespace GGJ
             return m_Grid.GetCellCenterWorld(position);
         }
 
-        public bool TryGetSpace(Vector3 position, out BoardSpace space)
+        public bool TryGetSpace(Vector3 positionWorld, out BoardSpace space)
         {
-            var cellPosition = m_Grid.WorldToCell(position);
+            var cellPosition = m_Grid.WorldToCell(positionWorld);
             var index = ToIndex(cellPosition);
             if (index == -1)
             {
@@ -199,6 +199,14 @@ namespace GGJ
             }
 
             space = m_BoardSpaces[index];
+            return true;
+        }
+
+        public bool TryPlacePiece(BoardPiece piece, BoardSpace space)
+        {
+            // TODO: Check the space is owned by this board (or throw exception)
+            // TODO: Check that space is available for a piece
+            space.PlacePiece(piece);
             return true;
         }
     }

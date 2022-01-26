@@ -25,22 +25,22 @@ namespace GGJ.Editor
                 var position = board.GetWorldCoordinates(space);
 
                 Color color;
-                switch (space.State)
+                switch (space.BoardSpaceType)
                 {
-                    case Unknown:
+                    case BoardSpace.Flavor.Unknown:
                         color = Color.magenta;
                         break;
-                    case Blocked _:
+                    case BoardSpace.Flavor.Wall:
                         color = Color.red;
                         break;
-                    case Null _:
+                    case BoardSpace.Flavor.Null:
                         color = Color.gray;
                         break;
-                    case Empty _:
+                    case BoardSpace.Flavor.Normal:
                         color = Color.green;
                         break;
                     default:
-                        Debug.LogWarning($"No handling implemented for {space.State.GetType()}");
+                        Debug.LogWarning($"No handling implemented for {space.BoardSpaceType}");
                         color = Color.black;
                         break;
                 }
