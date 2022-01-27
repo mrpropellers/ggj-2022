@@ -1,9 +1,7 @@
 {
-    "name": "GGJ",
+    "name": "GGJ Board",
     "rootNamespace": "GGJ",
     "references": [
-        "GUID:75469ad4d38634e559750d17036d5f7c",
-        "GUID:84d9a3601cd2e1e45906e2405197dca4",
         "GUID:7e45306a6293cdb459af056d4adeedad"
     ],
     "includePlatforms": [

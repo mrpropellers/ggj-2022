@@ -21,24 +21,24 @@ namespace GGJ
         // Only get this for debugging purposes - write clearly-named interfaces into this class when you need
         // to interpret the state for gameplay reasons
         public Board ParentBoard { get; }
-        public Vector2Int Coordinates { get; }
+        public Vector2Int CoordinatesGrid { get; }
+        public Vector3 CoordinatesWorld => ParentBoard.GetWorldCoordinates(this);
 
-        // Indicates whether this space could be moved into
+        public bool CanHoldPieces => m_Flavor == Flavor.Normal;
+        // Indicates whether this space could be moved into by the specified piece
         // TODO: Check status of pieces on space
-        public bool IsAvailableForMove => m_Flavor == Flavor.Normal;
+        public bool IsAvailableFor(BoardPiece pieceToPlace) => CanHoldPieces;
 
+        internal bool Contains(BoardPiece piece) => m_PiecesHere.Contains(piece);
+        internal void Add(BoardPiece piece) => m_PiecesHere.Add(piece);
+        internal void Remove(BoardPiece piece) => m_PiecesHere.Remove(piece);
 
         internal BoardSpace(Board parent, int x, int y, Flavor flavor)
         {
             ParentBoard = parent;
-            Coordinates = new Vector2Int(x, y);
+            CoordinatesGrid = new Vector2Int(x, y);
             m_Flavor = flavor;
             m_PiecesHere = new HashSet<BoardPiece>();
-        }
-
-        internal void PlacePiece(BoardPiece piece)
-        {
-            m_PiecesHere.Add(piece);
         }
     }
 }

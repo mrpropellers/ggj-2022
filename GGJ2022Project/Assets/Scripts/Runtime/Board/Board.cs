@@ -5,9 +5,10 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Tilemaps;
+using UnityEngine.Assertions;
 
-using GGJ.Runtime.Utility;
 using GGJ.Utility;
+using GGJ.Utility.Utility;
 
 namespace GGJ
 {
@@ -23,9 +24,16 @@ namespace GGJ
         [SerializeField]
         List<TileBase> m_BlockingTiles;
 
+        // Each piece can only occupy one space (although one space can hold many pieces)
+        // Keep track of which space each piece is on so we don't have to do a bunch of math every time
+        // we need to figure out this information
+        internal Dictionary<BoardPiece, BoardSpace> PieceToSpaceMap { get; private set; }
+
         // Helpful events for debugging and implementing other features against
         [SerializeField]
         public UnityEvent<Board> OnNewBoard;
+        [SerializeField]
+        public UnityEvent<Board> OnBoardConstructed;
         [SerializeField]
         public UnityEvent<Board, BoardSpace> OnBoardSpaceConstructed;
 
@@ -144,6 +152,27 @@ namespace GGJ
 
             Debug.Log("Board populated.");
             IsConstructing = false;
+            OnBoardConstructed?.Invoke(this);
+            PopulatePieceToBoardMap();
+        }
+
+        void PopulatePieceToBoardMap()
+        {
+            if (PieceToSpaceMap != null)
+            {
+                Debug.LogWarning(
+                    $"{nameof(PieceToSpaceMap)} has already been constructed once for {name} - overwriting...");
+            }
+
+            PieceToSpaceMap = new Dictionary<BoardPiece, BoardSpace>();
+            var pieces = FindObjectsOfType<BoardPiece>();
+            foreach (var piece in pieces)
+            {
+                if (TryGetSpace(piece.transform.position, out var space))
+                {
+                    PlacePiece(piece, space);
+                }
+            }
         }
 
         void Start()
@@ -157,13 +186,17 @@ namespace GGJ
 
         }
 
-        int ToIndex(Vector3Int coordinates)
+        int ToIndex(Vector2Int coordinates)
         {
             var i = coordinates.x - m_BoardBounds.xMin;
             var j = coordinates.y - m_BoardBounds.yMin;
             if (i < 0 || i >= Width || j < 0 || j >= Height)
             {
-                Debug.LogWarning($"Attempted to compute an out-of-bounds index ({coordinates})");
+                if (Application.isPlaying)
+                {
+                    Debug.LogWarning($"Attempted to compute an out-of-bounds index ({coordinates}).");
+                }
+
                 return -1;
             }
             return QuickMaths.IJToIndex(Width,
@@ -184,14 +217,13 @@ namespace GGJ
                 return Vector3.negativeInfinity;
             }
 
-            var position = new Vector3Int(space.Coordinates.x, space.Coordinates.y, 0);
+            var position = new Vector3Int(space.CoordinatesGrid.x, space.CoordinatesGrid.y, 0);
             return m_Grid.GetCellCenterWorld(position);
         }
 
-        public bool TryGetSpace(Vector3 positionWorld, out BoardSpace space)
+        public bool TryGetSpace(Vector2Int positionGrid, out BoardSpace space)
         {
-            var cellPosition = m_Grid.WorldToCell(positionWorld);
-            var index = ToIndex(cellPosition);
+            var index = ToIndex(positionGrid);
             if (index == -1)
             {
                 space = null;
@@ -202,12 +234,54 @@ namespace GGJ
             return true;
         }
 
-        public bool TryPlacePiece(BoardPiece piece, BoardSpace space)
+        public bool TryGetSpace(Vector3 positionWorld, out BoardSpace space)
         {
-            // TODO: Check the space is owned by this board (or throw exception)
-            // TODO: Check that space is available for a piece
-            space.PlacePiece(piece);
-            return true;
+            var cellPosition = (Vector2Int) m_Grid.WorldToCell(positionWorld);
+            return TryGetSpace(cellPosition, out space);
+        }
+
+        public bool TryGetSpace(BoardPiece piece, out BoardSpace space)
+        {
+            if (PieceToSpaceMap.TryGetValue(piece, out space))
+            {
+                if(space.Contains(piece))
+                {
+                    return true;
+                }
+
+                Debug.LogError($"{name} thinks {piece.name} is at {space.CoordinatesGrid}, but the " +
+                    $"{nameof(BoardSpace)} there doesn't agree...");
+                return false;
+            }
+
+            return false;
+        }
+
+        // Probably should keep this the only public means to put a piece in a space to avoid branching logic
+        // inside the Board class, which is meant to be primarily a data container
+        // Put decision trees and other state checking in the MovementHandler or wherever else makes most sense
+        public void PlacePiece(BoardPiece piece, BoardSpace targetSpace)
+        {
+            Assert.IsTrue(targetSpace.IsAvailableFor(piece),
+                $"{piece.name} can not be placed at {targetSpace.CoordinatesGrid} - " +
+                $"be sure to check availability before placing.");
+            Assert.IsTrue(m_BoardSpaces.Contains(targetSpace) && targetSpace.ParentBoard == this,
+                $"{name} is not keeping track of the space at {targetSpace.CoordinatesGrid} - " +
+                $"{nameof(targetSpace)} says its parent is {targetSpace.ParentBoard}.");
+
+            string logMessage;
+            if (TryGetSpace(piece, out var spaceCurrent))
+            {
+                spaceCurrent.Remove(piece);
+                LogHelpers.LogIfPlaying($"Moving {piece.name} from {spaceCurrent.CoordinatesGrid} to {targetSpace.CoordinatesGrid}");
+            }
+            else
+            {
+                LogHelpers.LogIfPlaying($"Placing {piece.name} on {nameof(BoardSpace)} at {targetSpace.CoordinatesGrid}.");
+            }
+
+            targetSpace.Add(piece);
+            PieceToSpaceMap[piece] = targetSpace;
         }
     }
 }

@@ -31,7 +31,6 @@ namespace GGJ.Editor
 
         internal static void RefreshSceneView()
         {
-            Debug.Log("refreshing!");
             //s_EditorWindow.Repaint();
             var sceneView = EditorWindow.GetWindow<SceneView>();
             // TODO: Should add an editorcoroutine to wait one frame before allowing another repaint call

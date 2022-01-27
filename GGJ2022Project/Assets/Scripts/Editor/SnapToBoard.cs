@@ -106,15 +106,15 @@ namespace GGJ.Editor
 
             if (EditorGUI.EndChangeCheck())
             {
-                if (m_TargetBoard.TryGetSpace(newPosition, out var boardSpace) &&
-                    boardSpace.IsAvailableForMove)
+                if (m_TargetBoard.TryGetSpace(newPosition, out var boardSpace) && boardSpace.CanHoldPieces)
                 {
                     Undo.RecordObjects(Selection.transforms, "Move Piece");
                     var position = m_TargetBoard.GetWorldCoordinates(boardSpace);
                     Selection.transforms[0].position = position;
-                    if (((SpriteRenderer) target).TryGetComponent<BoardPiece>(out var piece))
+                    if (((SpriteRenderer) target).TryGetComponent<BoardPiece>(out var piece) &&
+                        boardSpace.IsAvailableFor(piece))
                     {
-                        m_TargetBoard.TryPlacePiece(piece, boardSpace);
+                        m_TargetBoard.PlacePiece(piece, boardSpace);
                     }
                     else
                     {
