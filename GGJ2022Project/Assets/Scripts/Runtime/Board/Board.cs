@@ -36,6 +36,8 @@ namespace GGJ
         public UnityEvent<Board> OnBoardConstructed;
         [SerializeField]
         public UnityEvent<Board, BoardSpace> OnBoardSpaceConstructed;
+        [SerializeField]
+        public UnityEvent<Board, BoardPiece, BoardSpace> OnPiecePlaced;
 
         public Grid Grid => m_Grid;
         public int Width => m_BoardBounds.size.x;
@@ -44,6 +46,7 @@ namespace GGJ
         public bool IsValid => m_BoardSpaces != null && m_Grid != null;
         public bool IsConstructing { get; private set; }
         public bool NeedsInitialization => !IsValid && !IsConstructing;
+        public bool Contains(BoardPiece piece) => PieceToSpaceMap.ContainsKey(piece);
 
         // Determine the initial state of a space on the board, based on what kinds of tiles
         // are present on the Grid for that space
@@ -257,6 +260,20 @@ namespace GGJ
             return false;
         }
 
+        public BoardSpace GetSpace(BoardPiece piece)
+        {
+            var foundSpace = TryGetSpace(piece, out var space);
+            Assert.IsTrue(foundSpace, $"Failed to {nameof(GetSpace)} for {piece.name} -" +
+                $"Should you use {nameof(TryGetSpace)} here instead?");
+            return space;
+        }
+
+        public void RemovePiece(BoardPiece piece)
+        {
+            // TODO? Add some asserts here
+            GetSpace(piece).Remove(piece);
+        }
+
         // Probably should keep this the only public means to put a piece in a space to avoid branching logic
         // inside the Board class, which is meant to be primarily a data container
         // Put decision trees and other state checking in the MovementHandler or wherever else makes most sense
@@ -282,6 +299,7 @@ namespace GGJ
 
             targetSpace.Add(piece);
             PieceToSpaceMap[piece] = targetSpace;
+            OnPiecePlaced?.Invoke(this, piece, targetSpace);
         }
     }
 }

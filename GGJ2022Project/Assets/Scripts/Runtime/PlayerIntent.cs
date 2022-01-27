@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GGJ.Utility;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace GGJ
@@ -17,7 +18,8 @@ namespace GGJ
             }
 
             var direction = context.action.ReadValue<Vector2>();
-            var intention = new Character.Intention(Character.Intent.Move, direction);
+            var directionOnGrid = QuickMaths.QuantizeToDirection(direction);
+            var intention = new Character.Intention(Character.Intent.Move, directionOnGrid);
             m_SelectedCharacter.ReceiveIntent(intention);
         }
     }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using GGJ;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,17 +10,18 @@ public class Character : MonoBehaviour
 {
     public enum Intent
     {
+
         Move
     }
 
     public struct Intention
     {
         public Intent Intent { get; }
-        public Vector3 Direction { get; internal set; }
+        public Vector2Int Direction { get; internal set; }
 
         // TODO: Sanitize input by using different constructors for different Intents
         //       e.g. an Intent to stand still should never require a direction
-        public Intention(Intent intent, Vector3 direction)
+        public Intention(Intent intent, Vector2Int direction)
         {
             Intent = intent;
             Direction = direction;
@@ -43,11 +43,14 @@ public class Character : MonoBehaviour
     }
 
     BoardPiece m_BoardPiece;
+    // NOTE: This may be null if a Character can't carry objects
+    // TODO? Add separate Hands component for items visibly carried by Character?
+    Inventory m_Inventory;
     // TODO? Could log both timestamp and Turn # when intent was received
     Queue<Memory> m_IntentBuffer;
     Intention? m_ActiveIntent;
 
-    public UnityEvent OnMovementFinished;
+    public UnityEvent<Character> OnMovementFinished;
 
     [SerializeField]
     CharacterMovementRules m_MovementRules;
@@ -60,19 +63,32 @@ public class Character : MonoBehaviour
     float m_AttentionSpan = 0.2f;
 
     public BoardPiece Piece => m_BoardPiece;
+    public CharacterMovementRules Movement => m_MovementRules;
     public bool IsMoving { get; private set; }
     public bool IsActing => m_ActiveIntent != null;
+    public bool HasInventory => m_Inventory != null;
+    public bool CanPickUp(Item item) => item.isActiveAndEnabled &&
+        HasInventory && m_Inventory.CanHold(item);
+
+    public static implicit operator BoardPiece(Character character) => character.Piece;
 
     public void Awake()
     {
         m_BoardPiece = GetComponent<BoardPiece>();
         m_IntentBuffer = new Queue<Memory>();
-        OnMovementFinished.AddListener(ClearActiveIntent);
+        OnMovementFinished.AddListener(_ => ClearActiveIntent());
+        m_Inventory = GetComponent<Inventory>();
     }
 
     public void Update()
     {
         ProcessIntents();
+    }
+
+    // TODO? Should this be registered as an intention?
+    public void PickUp(Item item)
+    {
+        m_Inventory.Add(item);
     }
 
     void ProcessIntents()
@@ -99,7 +115,8 @@ public class Character : MonoBehaviour
         switch (intention.Intent)
         {
             case Intent.Move:
-                if (!TryMove(intention.Direction))
+                if (intention.Direction == Vector2Int.zero ||
+                    !TryMove(intention.Direction))
                 {
                     ClearActiveIntent();
                 }
@@ -118,7 +135,7 @@ public class Character : MonoBehaviour
         ProcessIntents();
     }
 
-    IEnumerator MoveInScene(Vector3 start, Vector3 end)
+    IEnumerator MoveInWorld(Vector3 start, Vector3 end)
     {
         var direction = (end - start);
         var distance = direction.magnitude;
@@ -140,16 +157,17 @@ public class Character : MonoBehaviour
 
         transform.position = end;
         IsMoving = false;
-        OnMovementFinished?.Invoke();
+
+        OnMovementFinished?.Invoke(this);
     }
 
-    void PerformMovement(Vector3 from, Vector3 to)
+    void PerformWorldMovement(Vector3 from, Vector3 to)
     {
         IsMoving = true;
-        StartCoroutine(MoveInScene(from, to));
+        StartCoroutine(MoveInWorld(from, to));
     }
 
-    bool TryMove(Vector2 direction)
+    bool TryMove(Vector2Int direction)
     {
         if (IsMoving)
         {
@@ -157,10 +175,10 @@ public class Character : MonoBehaviour
             return false;
         }
         var startPosition = transform.position;
-        if (BoardNavigation.TryMove(this, m_MovementRules, direction, out var space))
+        // TODO: Register this as a callback to a "TurnExecutor" - let it decide when movement executes
+        if (BoardNavigation.TryMove(this, direction, out var space))
         {
-            // TODO: Fire this as a callback to a "TurnExecutor"
-            PerformMovement(startPosition, space.CoordinatesWorld);
+            PerformWorldMovement(startPosition, space.CoordinatesWorld);
             return true;
         }
 

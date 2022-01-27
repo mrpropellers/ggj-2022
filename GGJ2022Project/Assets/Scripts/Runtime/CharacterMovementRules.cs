@@ -20,6 +20,9 @@ namespace GGJ
         [Range(1f, 100f)]
         float m_MovementSpeed = float.PositiveInfinity;
 
+        [SerializeField]
+        bool m_CanPickUpItems;
+
         public float Speed => m_MovementSpeed;
 
         public Vector2Int GetMove(Vector2 direction)

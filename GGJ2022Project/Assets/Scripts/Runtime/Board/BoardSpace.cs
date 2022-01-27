@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace GGJ
@@ -25,6 +28,16 @@ namespace GGJ
         public Vector3 CoordinatesWorld => ParentBoard.GetWorldCoordinates(this);
 
         public bool CanHoldPieces => m_Flavor == Flavor.Normal;
+
+        // TODO: These LINQ expressions probably do some unnecessary allocating - could be optimized
+        public bool HasAny<T>() where T : MonoBehaviour
+            => m_PiecesHere.Any(piece => piece.GetComponent<T>() != null);
+
+        public IEnumerable<T> GetAll<T>() where T : MonoBehaviour
+            => m_PiecesHere
+                .Where(piece => piece.GetComponent<T>() != null)
+                .Select(piece => piece.GetComponent<T>());
+
         // Indicates whether this space could be moved into by the specified piece
         // TODO: Check status of pieces on space
         public bool IsAvailableFor(BoardPiece pieceToPlace) => CanHoldPieces;
@@ -40,5 +53,8 @@ namespace GGJ
             m_Flavor = flavor;
             m_PiecesHere = new HashSet<BoardPiece>();
         }
+
+        public static Vector2Int operator +(BoardSpace space, Vector2Int delta) =>
+            space.CoordinatesGrid + delta;
     }
 }
