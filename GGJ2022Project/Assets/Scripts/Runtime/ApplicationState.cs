@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace GGJ
 {
-    public class ApplicationState
+    public class ApplicationState : MonoBehaviour
     {
         static ApplicationState s_Instance;
 
@@ -13,13 +13,20 @@ namespace GGJ
                 if (s_Instance == null)
                 {
                     Debug.LogWarning($"{nameof(ApplicationState)} was not initialized before being accessed.");
-                    s_Instance = new ApplicationState();
                 }
 
                 return s_Instance;
             }
         }
 
-        public Board ActiveBoard;
+        public Board ActiveBoard { get; set; }
+
+        [RuntimeInitializeOnLoadMethod(loadType: RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void Init()
+        {
+            GameObject instanceGameObject = Instantiate(Resources.Load<GameObject>("Prefabs/ApplicationState"));
+            s_Instance = instanceGameObject.GetComponent<ApplicationState>();
+            DontDestroyOnLoad(instanceGameObject);
+        }
     }
 }
