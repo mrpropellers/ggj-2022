@@ -132,3 +132,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2326b83f061b43bdba2c0a75da027939, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InGameStatePrefab: {fileID: 592285352831565650, guid: 12e40ac3df1633b429b757b23e96b23e,
+    type: 3}

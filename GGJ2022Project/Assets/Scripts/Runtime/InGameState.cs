@@ -1,7 +1,8 @@
-﻿namespace GGJ
-{
-    public class InGameState
-    {
+using UnityEngine;
 
+namespace GGJ
+{
+    public class InGameState : MonoBehaviour
+    {
     }
 }

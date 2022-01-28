@@ -4,6 +4,11 @@ namespace GGJ
 {
     public class ApplicationState : MonoBehaviour
     {
+        #region Inspector Parameters
+        public GameObject InGameStatePrefab;
+        #endregion
+
+        #region Instance Management
         static ApplicationState s_Instance;
 
         public static ApplicationState Instance
@@ -19,8 +24,6 @@ namespace GGJ
             }
         }
 
-        public Board ActiveBoard { get; set; }
-
         [RuntimeInitializeOnLoadMethod(loadType: RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Init()
         {
@@ -28,5 +31,21 @@ namespace GGJ
             s_Instance = instanceGameObject.GetComponent<ApplicationState>();
             DontDestroyOnLoad(instanceGameObject);
         }
+        #endregion
+
+        #region Engine Messages
+        private void Start()
+        {
+            // TODO: Instantiate InGameStatePrefab from someplace more appropriate, like the button on the main menu that starts the game.
+            var inGameStateInstance = Instantiate(InGameStatePrefab);
+            DontDestroyOnLoad(inGameStateInstance);
+        }
+        #endregion
+
+        public Board ActiveBoard { get; set; }
+
+
+
+        
     }
 }
