@@ -3,11 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using GGJ;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(BoardPiece))]
 public class Character : MonoBehaviour
 {
+    // TODO? Intentions could probably be simplified -
+    //      Remove this enum and just store memories as a vector corresponding to the move the character
+    //      wants to make. "Intent" here is better represented by "Motivation" in the IntentionProvider
     public enum Intent
     {
 
@@ -67,8 +71,31 @@ public class Character : MonoBehaviour
     public bool IsMoving { get; private set; }
     public bool IsActing => m_ActiveIntent != null;
     public bool HasInventory => m_Inventory != null;
+    public bool HasIntentionsQueued
+    {
+        get
+        {
+            PruneIntents();
+            return m_IntentBuffer.Count > 0;
+        }
+    }
+
+    public bool IsTangible => Piece.PieceTangibility switch
+    {
+        BoardPiece.Tangibility.Physical => StageState.Instance.CurrentBoardMode == StageState.BoardMode.Physical,
+        BoardPiece.Tangibility.Spritual => StageState.Instance.CurrentBoardMode == StageState.BoardMode.Spiritual,
+        BoardPiece.Tangibility.Both => true,
+        _ => throw new ArgumentOutOfRangeException($"No handling for {Piece.PieceTangibility}")
+    };
+
     public bool CanPickUp(Item item) => item.isActiveAndEnabled &&
         HasInventory && m_Inventory.CanHold(item);
+
+    // TODO: This should depend on the characters movement rules, but we're locked into "Simple" for now
+    public bool CanMoveTo(Vector2Int cellCoordinates) =>
+        StageState.Instance.ActiveBoard.TryGetSpace(cellCoordinates, out var space)
+        && space.IsAvailableFor(this);
+
 
     public static implicit operator BoardPiece(Character character) => character.Piece;
 
@@ -76,13 +103,16 @@ public class Character : MonoBehaviour
     {
         m_BoardPiece = GetComponent<BoardPiece>();
         m_IntentBuffer = new Queue<Memory>();
-        OnMovementFinished.AddListener(_ => ClearActiveIntent());
         m_Inventory = GetComponent<Inventory>();
+        if (m_MovementRules == null)
+        {
+            Debug.LogWarning($"{name} has no {nameof(m_MovementRules)} assigned!");
+        }
     }
 
     public void Update()
     {
-        ProcessIntents();
+        PruneIntents();
     }
 
     // TODO? Should this be registered as an intention?
@@ -91,34 +121,47 @@ public class Character : MonoBehaviour
         m_Inventory.Add(item);
     }
 
-    void ProcessIntents()
+    void PruneIntents()
     {
         while (m_IntentBuffer.TryPeek(out var next) && next.TimeElapsed > m_AttentionSpan)
         {
             m_IntentBuffer.Dequeue();
         }
+    }
 
-        if (IsActing)
+    public void ProcessIntents()
+    {
+        PruneIntents();
+
+        Assert.IsFalse(IsActing, $"Tried to {nameof(ProcessIntents)} while {name} was already acting" +
+            $"You must wait until previous intent is resolved before calling again.");
+
+
+        // Get the most recent intent entered
+        while (m_IntentBuffer.TryDequeue(out var entry))
         {
-            return;
+            m_ActiveIntent = entry.intention;
         }
 
-        if (m_IntentBuffer.TryDequeue(out var entry))
+        if (m_ActiveIntent != null)
         {
-            Act(entry.intention);
+            Act();
         }
     }
 
-    void Act(Intention intention)
+    void Act()
     {
-        m_ActiveIntent = intention;
+        Assert.IsFalse(m_ActiveIntent == null,
+            $"Can't call the parameterless {nameof(Act)} if no {nameof(m_ActiveIntent)} is set.");
+        var intention = m_ActiveIntent.Value;
+        // Can't use IsNotNull here because Nullable<T> it technically still a value type
         switch (intention.Intent)
         {
             case Intent.Move:
                 if (intention.Direction == Vector2Int.zero ||
                     !TryMove(intention.Direction))
                 {
-                    ClearActiveIntent();
+                    MarkMovementFinished();
                 }
                 break;
             default:
@@ -126,13 +169,21 @@ public class Character : MonoBehaviour
         }
     }
 
+    void Act(Intention intention)
+    {
+        m_ActiveIntent = intention;
+        Act();
+    }
+
     // TODO?
     // This could be more robust by having events pass their Intent value in here and only clearing when
     // the Intent matches the active intention, but this is already way over-engineered, so....
-    void ClearActiveIntent()
+    void MarkMovementFinished()
     {
+        IsMoving = false;
         m_ActiveIntent = null;
-        ProcessIntents();
+        OnMovementFinished?.Invoke(this);
+        PruneIntents();
     }
 
     IEnumerator MoveInWorld(Vector3 start, Vector3 end)
@@ -142,7 +193,7 @@ public class Character : MonoBehaviour
         if (Mathf.Approximately(distance, 0f))
         {
             Debug.LogWarning($"{name} attempted to move to where it already was");
-            IsMoving = false;
+            MarkMovementFinished();
             yield break;
         }
         var timeNeeded = distance / m_MovementRules.Speed;
@@ -156,9 +207,7 @@ public class Character : MonoBehaviour
         }
 
         transform.position = end;
-        IsMoving = false;
-
-        OnMovementFinished?.Invoke(this);
+        MarkMovementFinished();
     }
 
     void PerformWorldMovement(Vector3 from, Vector3 to)
@@ -185,9 +234,9 @@ public class Character : MonoBehaviour
         return false;
     }
 
-    public void ReceiveIntent(Intention intention)
+    public void ReceiveIntent(Intention intention, bool canAct = true)
     {
-        if (IsActing)
+        if (IsActing || !canAct)
         {
             m_IntentBuffer.Enqueue(new Memory(intention));
         }

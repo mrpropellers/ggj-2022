@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
 namespace GGJ
 {
     public class StageState : MonoBehaviour
     {
-
         static StageState s_Instance;
 
         public static StageState Instance
@@ -20,10 +17,16 @@ namespace GGJ
             }
         }
 
-        Dictionary<BoardPiece, Board> m_PieceToBoardMap;
-        Board[] m_AllBoards;
+        // XXX: No addy third mode-y >:I
+        public enum BoardMode
+        {
+            Physical,
+            Spiritual
+        }
 
         public Board ActiveBoard { get; private set; }
+        public BoardMode CurrentBoardMode { get; private set; }
+        public Character PlayerCharacter { get; private set; }
 
         void Awake()
         {
@@ -40,54 +43,9 @@ namespace GGJ
                     Debug.LogWarning($"No {nameof(StageState)} instance found in scene, creating one.");
                     var go = new GameObject(nameof(StageState));
                     s_Instance = go.AddComponent<StageState>();
-                    s_Instance.m_AllBoards = FindObjectsOfType<Board>();
-                    s_Instance.ActiveBoard = s_Instance.m_AllBoards[0];
-                    Debug.LogWarning($"Pointing at the first {nameof(Board)} we found " +
-                        $"({s_Instance.m_AllBoards[0].name}) could lead to undefined behavior " +
-                        $"(avoid this by manually creating a {nameof(StageState)} object)");
                 }
-                s_Instance.EnsureAllBoardsAreTracked();
-            }
-        }
-
-        void EnsureAllBoardsAreTracked()
-        {
-            m_PieceToBoardMap = new Dictionary<BoardPiece, Board>();
-            foreach (var board in FindObjectsOfType<Board>())
-            {
-                board.OnPiecePlaced.AddListener(UpdatePieceToBoardMap);
-            }
-        }
-
-        public Board GetBoard(BoardPiece piece)
-        {
-            if (!m_PieceToBoardMap.ContainsKey(piece))
-            {
-                foreach (var board in m_AllBoards)
-                {
-                    if (board.Contains(piece))
-                    {
-                        Debug.Log(
-                            $"{piece.name} on {board.name} wasn't tracked yet - adding it to {nameof(m_PieceToBoardMap)}");
-                        m_PieceToBoardMap.Add(piece, board);
-                        return board;
-                    }
-                }
-            }
-
-            return m_PieceToBoardMap[piece];
-        }
-
-        void UpdatePieceToBoardMap(Board board, BoardPiece piece, BoardSpace _)
-        {
-            // TODO? Make this more robust? Might want to compare to ActiveBoard or something
-            if (m_PieceToBoardMap.ContainsKey(piece))
-            {
-                m_PieceToBoardMap[piece] = board;
-            }
-            else
-            {
-                m_PieceToBoardMap.Add(piece, board);
+                s_Instance.ActiveBoard = FindObjectOfType<Board>();
+                s_Instance.PlayerCharacter = FindObjectOfType<PlayerTurnReceiver>().PlayerCharacter;
             }
         }
     }

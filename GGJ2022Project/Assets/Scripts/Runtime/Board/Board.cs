@@ -262,8 +262,16 @@ namespace GGJ
 
         public BoardSpace GetSpace(BoardPiece piece)
         {
-            var foundSpace = TryGetSpace(piece, out var space);
-            Assert.IsTrue(foundSpace, $"Failed to {nameof(GetSpace)} for {piece.name} -" +
+            var success = TryGetSpace(piece, out var space);
+            Assert.IsTrue(success, $"Failed to {nameof(GetSpace)} for {piece.name} -" +
+                $"Should you use {nameof(TryGetSpace)} here instead?");
+            return space;
+        }
+
+        public BoardSpace GetSpace(Vector2Int cellCoordinates)
+        {
+            var success = TryGetSpace(cellCoordinates, out var space);
+            Assert.IsTrue(success, $"Failed to {nameof(GetSpace)} at {cellCoordinates} -" +
                 $"Should you use {nameof(TryGetSpace)} here instead?");
             return space;
         }
