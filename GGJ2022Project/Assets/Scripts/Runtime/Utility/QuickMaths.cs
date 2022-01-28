@@ -17,21 +17,11 @@ namespace GGJ.Utility
             return new Vector2Int(i, j);
         }
 
-        public static Vector2Int QuantizeToDirection(Vector2 floatVector)
+        public static bool VectorIsZero(Vector2 vector)
         {
-            if (Mathf.Approximately(floatVector.x, 0) &&
-                Mathf.Approximately(floatVector.y, 0))
-            {
-                return Vector2Int.zero;
-            }
-            var xAbs = Mathf.Abs(floatVector.x);
-            var yAbs = Mathf.Abs(floatVector.y);
-            if (xAbs > yAbs)
-            {
-                return xAbs > floatVector.x ? Vector2Int.left : Vector2Int.right;
-            }
-
-            return yAbs > floatVector.y ? Vector2Int.down : Vector2Int.up;
+            return Mathf.Approximately(vector.x, 0) &&
+                Mathf.Approximately(vector.y, 0);
         }
+
     }
 }

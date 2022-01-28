@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.UIElements;
 
 namespace GGJ
 {
@@ -28,7 +27,7 @@ namespace GGJ
         public static Vector2Int ComputeMovement(Character character, Vector2 rawDirection)
         {
             var move = character.Movement.GetMove(rawDirection);
-            var board = StageState.Instance.GetBoard(character);
+            var board = StageState.Instance.ActiveBoard;
 
             if (!board.TryGetSpace(character.Piece, out var currentSpace))
             {
@@ -53,7 +52,7 @@ namespace GGJ
         {
             EnsureCharacterRegistered(character);
 
-            var board = StageState.Instance.GetBoard(character);
+            var board = StageState.Instance.ActiveBoard;
 
             var moveTarget = board.GetSpace(character) + move;
             if (board.TryGetSpace(moveTarget, out targetSpace)

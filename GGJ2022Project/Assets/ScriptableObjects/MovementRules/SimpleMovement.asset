@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: SimpleMovement
   m_EditorClassIdentifier: 
   m_MovementFlavor: 0
-  m_MovementSpeed: 41
+  m_MovementSpeed: 5

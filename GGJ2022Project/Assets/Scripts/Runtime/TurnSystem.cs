@@ -10,66 +10,69 @@ namespace GGJ
     /// </summary>
     public class TurnSystem : MonoBehaviour
     {
-        private Coroutine turnCoroutine;
+        Coroutine m_TurnCoroutine;
+        TurnReceiver m_CurrentTurnReceiver;
 
-        private int currentTurnNumber;
+        int m_CurrentTurnNumber;
 
-        private void OnEnable()
+        void OnEnable()
         {
-            turnCoroutine = StartCoroutine(ProcessTurns());
+            m_CurrentTurnNumber = 1;
+            m_TurnCoroutine = StartCoroutine(ProcessTurns());
         }
 
         private void OnDisable()
         {
-            if (turnCoroutine != null)
+            if (m_TurnCoroutine != null)
             {
-                StopCoroutine(turnCoroutine);
-                turnCoroutine = null;
+                StopCoroutine(m_TurnCoroutine);
+                m_TurnCoroutine = null;
             }
         }
 
-        private TurnReceiver PickNextTurnReceiver()
+        TurnReceiver PickNextTurnReceiver()
         {
             TurnReceiver bestTurnReceiver = null;
-            int earliestPreviousTurn = int.MaxValue;
+            var earliestPreviousTurn = int.MaxValue;
 
             foreach (var turnReceiver in InstanceTracker<TurnReceiver>.GetInstancesReadOnly())
             {
-                if (turnReceiver.previousTurnNumber < earliestPreviousTurn)
+                if (turnReceiver.PreviousTurnNumber < earliestPreviousTurn)
                 {
-                    earliestPreviousTurn = turnReceiver.previousTurnNumber;
+                    earliestPreviousTurn = turnReceiver.PreviousTurnNumber;
                     bestTurnReceiver = turnReceiver;
                 }
             }
             return bestTurnReceiver;
         }
 
-        private IEnumerator ProcessTurns()
+        IEnumerator ProcessTurns()
         {
             while (true)
             {
                 yield return null;
 
                 // Pick the receiver for this turn.
-                TurnReceiver currentTurnReciever = PickNextTurnReceiver();
+                TurnReceiver currentTurnReceiver = PickNextTurnReceiver();
+                Debug.Log($"[Turn {m_CurrentTurnNumber}] It is {currentTurnReceiver.name}'s turn.");
 
                 // Early out if there's nothing to receive a turn.
-                if (currentTurnReciever == null)
+                if (currentTurnReceiver == null)
                 {
                     continue;
                 }
 
                 // Dispatch the turn to currentTurnReceiver and run the provided coroutine to completion.
-                Turn turn = new Turn(turnSystem: this, turnReceiver: currentTurnReciever, turnNumber: currentTurnNumber);
+                var turn =
+                    new Turn(turnSystem: this, turnReceiver: currentTurnReceiver, turnNumber: m_CurrentTurnNumber);
                 onPreEnterTurn?.Invoke(turn);
 
-                IEnumerable currentTurnCoroutine = currentTurnReciever.HandleTurn(turn);
-                foreach (var _ in currentTurnCoroutine)
-                {
-                    yield return null;
-                }
+                var currentTurnCoroutine = currentTurnReceiver.HandleTurn(turn);
+                yield return currentTurnCoroutine;
 
                 onPostExitTurn?.Invoke(turn);
+                Debug.Log($"[Turn {m_CurrentTurnNumber}] {currentTurnReceiver.name}'s turn is complete.");
+                m_CurrentTurnNumber++;
             }
         }
 
