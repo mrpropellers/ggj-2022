@@ -43,9 +43,9 @@ namespace GGJ.UI
             }
         }
 
-        
-        private IEnumerator<Item> emptyEnumerator = System.Linq.Enumerable.Empty<Item>().GetEnumerator();
+        private static readonly IEnumerator<Item> emptyEnumerator = System.Linq.Enumerable.Empty<Item>().GetEnumerator();
 
+        #region Inventory Link
         private IHoldItems m_inventory;
         public IHoldItems inventory
         {
@@ -80,5 +80,6 @@ namespace GGJ.UI
         {
             Rebuild();
         }
+        #endregion
     }
 }

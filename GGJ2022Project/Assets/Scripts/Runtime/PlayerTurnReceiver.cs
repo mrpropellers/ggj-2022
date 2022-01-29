@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using GGJ.Utility;
 using UnityEngine;
@@ -21,6 +21,7 @@ namespace GGJ
 
         bool IsWaitingForInput => CurrentPhase == TurnPhase.WaitingForIntent;
 
+        #region Engine Messages
         // TODO? If the player had an arbitrary number of characters, we'd want to subscribe to some other event
         void Awake()
         {
@@ -36,6 +37,19 @@ namespace GGJ
                 ResolveIntention();
             }
         }
+
+        protected new void OnEnable()
+        {
+            base.OnEnable();
+            OnPlayerTurnReceiverDiscovered?.Invoke(this);
+        }
+
+        protected new void OnDisable()
+        {
+            OnPlayerTurnReceiverLost?.Invoke(this);
+            base.OnDisable();
+        }
+        #endregion
 
         void ResolveIntention()
         {
@@ -105,5 +119,10 @@ namespace GGJ
         {
             yield return new WaitUntil(() => CurrentPhase == TurnPhase.Finished);
         }
+
+        #region Public Static Events
+        public static event Action<PlayerTurnReceiver> OnPlayerTurnReceiverDiscovered;
+        public static event Action<PlayerTurnReceiver> OnPlayerTurnReceiverLost;
+        #endregion
     }
 }
