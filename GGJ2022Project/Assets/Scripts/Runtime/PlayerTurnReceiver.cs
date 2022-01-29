@@ -17,6 +17,10 @@ namespace GGJ
 
         public override int StartingTurnNumber => -2;
 
+        bool CanRealmSwitch => !Application.isPlaying || IsWaitingForInput;
+
+        bool IsWaitingForInput => CurrentPhase == TurnPhase.WaitingForIntent;
+
         // TODO? If the player had an arbitrary number of characters, we'd want to subscribe to some other event
         void Awake()
         {
@@ -38,6 +42,27 @@ namespace GGJ
             Assert.AreEqual(CurrentPhase, TurnPhase.WaitingForIntent);
             PhaseComplete(TurnPhase.WaitingForIntent);
             m_SelectedCharacter.ProcessIntents();
+        }
+
+        // Need a separate button for invocations from the UI
+        public void OnRealmSwitch()
+        {
+            if (CanRealmSwitch)
+            {
+                PhaseComplete(TurnPhase.WaitingForIntent);
+                StageState.Instance.OnRealmSwitchFinish.AddListener(MarkRealmSwitchComplete);
+                StartCoroutine(StageState.Instance.InitiateRealmSwitch());
+            }
+        }
+
+        public void OnRealmSwitch(InputAction.CallbackContext context)
+        {
+            if (!context.action.WasPerformedThisFrame())
+            {
+                return;
+            }
+
+            OnRealmSwitch();
         }
 
         public void OnMove(InputAction.CallbackContext context)
@@ -68,6 +93,12 @@ namespace GGJ
             Assert.AreEqual(m_SelectedCharacter, character,
                 $"{character.name} is not {m_SelectedCharacter.name} - something broke.");
             PhaseComplete(TurnPhase.ResolvingIntent);
+        }
+
+        void MarkRealmSwitchComplete()
+        {
+            PhaseComplete(TurnPhase.ResolvingIntent);
+            StageState.Instance.OnRealmSwitchFinish.RemoveListener(MarkRealmSwitchComplete);
         }
 
         protected override IEnumerator HandleTurn_impl(Turn incomingTurn)

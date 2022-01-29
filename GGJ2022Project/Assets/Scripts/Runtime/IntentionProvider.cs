@@ -31,11 +31,16 @@ namespace GGJ
         Motivation m_MotivationEthereal;
         Character m_Self;
 
-        public Character Self => m_Self;
-
-        public void Awake()
+        public Character Self
         {
-            m_Self = GetComponent<Character>();
+            get
+            {
+                if (m_Self == null)
+                {
+                    m_Self = GetComponent<Character>();
+                }
+                return m_Self;
+            }
         }
 
         bool MoveIsNotValid(Board board, Vector2Int move)

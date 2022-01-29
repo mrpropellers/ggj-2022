@@ -68,8 +68,6 @@ namespace GGJ
 
         static void ResolveMovement(Character character)
         {
-            Debug.Log("Resolving movement...");
-            // TODO? Might run into problems with this when moving pieces around the in-active realm
             var board = StageState.Instance.ActiveBoard;
             if (!board.TryGetSpace(character.Piece, out var space))
             {

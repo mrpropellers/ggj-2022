@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
+using UnityEngine.Events;
 
 namespace GGJ
 {
@@ -28,9 +31,38 @@ namespace GGJ
         public BoardMode CurrentBoardMode { get; private set; }
         public Character PlayerCharacter { get; private set; }
 
+        public UnityEvent OnRealmSwitchStart;
+        public UnityEvent OnRealmSwitchFinish;
+
         void Awake()
         {
             EnsureInitialized();
+        }
+
+        void ToggleBoardMode()
+        {
+            CurrentBoardMode = CurrentBoardMode == BoardMode.Physical
+                ? BoardMode.Spiritual
+                : BoardMode.Physical;
+            Debug.Log($"{nameof(CurrentBoardMode)} switched to {CurrentBoardMode}.");
+        }
+
+        public bool IsTangible(BoardPiece piece)
+        {
+            var tangibility = piece.PieceTangibility;
+            Assert.AreNotEqual(tangibility, BoardPiece.Tangibility.Undefined,
+                $"{piece.name} was not initialized correctly, its {nameof(BoardPiece.Tangibility)} is not set.");
+            return tangibility == BoardPiece.Tangibility.Both
+                || tangibility == BoardPiece.Tangibility.Physical && CurrentBoardMode == BoardMode.Physical
+                || tangibility == BoardPiece.Tangibility.Spritual && CurrentBoardMode == BoardMode.Spiritual;
+        }
+
+        public IEnumerator InitiateRealmSwitch()
+        {
+            OnRealmSwitchStart?.Invoke();
+            ToggleBoardMode();
+            OnRealmSwitchFinish?.Invoke();
+            yield break;
         }
 
         static void EnsureInitialized()

@@ -8,7 +8,7 @@ namespace GGJ
     {
         BoardPiece m_Piece;
 
-        public void OnEnable()
+        public void Awake()
         {
             if (!GlobalConsts.Tags.Items.Contains(tag))
             {
@@ -16,10 +16,6 @@ namespace GGJ
                     $"{name}'s tag, {tag}, is not in the list of known item tags. " +
                     $"Either add {tag} to {nameof(GlobalConsts.Tags.Items)} or change {name}'s tag.");
             }
-        }
-
-        public void Awake()
-        {
             m_Piece = GetComponent<BoardPiece>();
         }
 

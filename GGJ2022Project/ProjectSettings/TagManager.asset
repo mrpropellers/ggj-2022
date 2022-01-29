@@ -51,6 +51,9 @@ TagManager:
   - name: Foreground
     uniqueID: 4153966149
     locked: 0
+  - name: Atmosphere
+    uniqueID: 2243364585
+    locked: 0
   - name: Collider Debug
     uniqueID: 679577803
     locked: 0

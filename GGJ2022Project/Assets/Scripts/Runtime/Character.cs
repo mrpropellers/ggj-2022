@@ -80,16 +80,11 @@ public class Character : MonoBehaviour
         }
     }
 
-    public bool IsTangible => Piece.PieceTangibility switch
-    {
-        BoardPiece.Tangibility.Physical => StageState.Instance.CurrentBoardMode == StageState.BoardMode.Physical,
-        BoardPiece.Tangibility.Spritual => StageState.Instance.CurrentBoardMode == StageState.BoardMode.Spiritual,
-        BoardPiece.Tangibility.Both => true,
-        _ => throw new ArgumentOutOfRangeException($"No handling for {Piece.PieceTangibility}")
-    };
+    public bool IsTangible => StageState.Instance.IsTangible(this);
 
-    public bool CanPickUp(Item item) => item.isActiveAndEnabled &&
-        HasInventory && m_Inventory.CanHold(item);
+    public bool CanPickUp(Item item) => item.isActiveAndEnabled && IsTangible
+        && StageState.Instance.IsTangible(item)
+        && HasInventory && m_Inventory.CanHold(item);
 
     // TODO: This should depend on the characters movement rules, but we're locked into "Simple" for now
     public bool CanMoveTo(Vector2Int cellCoordinates) =>
