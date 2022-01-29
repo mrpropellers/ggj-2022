@@ -6,6 +6,7 @@ namespace GGJ
     {
         #region Inspector Parameters
         public GameObject InGameStatePrefab;
+        public RectTransform MainCanvasTransform;
         #endregion
 
         #region Instance Management
