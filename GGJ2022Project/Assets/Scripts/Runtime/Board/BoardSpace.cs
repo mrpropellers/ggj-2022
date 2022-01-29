@@ -27,7 +27,8 @@ namespace GGJ
         public Vector2Int CoordinatesGrid { get; }
         public Vector3 CoordinatesWorld => ParentBoard.GetWorldCoordinates(this);
 
-        public bool CanHoldPieces => m_Flavor == Flavor.Normal;
+        public bool CanHoldTangible => m_Flavor == Flavor.Normal;
+        public bool CanHoldEthereal => m_Flavor is Flavor.Normal or Flavor.Wall;
 
         // TODO: These LINQ expressions probably do some unnecessary allocating - could be optimized
         public bool HasAny<T>() where T : MonoBehaviour
@@ -40,7 +41,6 @@ namespace GGJ
 
         // Indicates whether this space could be moved into by the specified piece
         // TODO: Check status of pieces on space
-        public bool IsAvailableFor(BoardPiece pieceToPlace) => CanHoldPieces;
 
         internal bool Contains(BoardPiece piece) => m_PiecesHere.Contains(piece);
         internal void Add(BoardPiece piece) => m_PiecesHere.Add(piece);

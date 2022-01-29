@@ -24,6 +24,49 @@ namespace GGJ
             }
         }
 
+        public static bool CharacterCanMoveTo(Character mover, BoardSpace space)
+        {
+            var piecesInSpace = space.GetAll<BoardPiece>();
+            var stageState = StageState.Instance;
+
+            if (!stageState.SpaceSupportsHoldingPiece(space, mover))
+            {
+                return false;
+            }
+
+            // Check if space already contains a piece that would block this character
+            foreach (var piece in piecesInSpace)
+            {
+                BoardPiece blocker = piece.TryGetComponent<Character>(out var character)
+                    ? character
+                    : piece.TryGetComponent<Obstacle>(out var obstacle)
+                        ? obstacle
+                        : null;
+                if (blocker != null)
+                {
+                    if (stageState.DoTangibilitiesMatch(mover, blocker))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        public static bool SpaceCanHoldPiece(BoardSpace space, BoardPiece piece)
+        {
+            if (piece.TryGetComponent<Character>(out var character))
+            {
+                return CharacterCanMoveTo(character, space);
+            }
+
+            Debug.LogWarning(
+                $"No explicit handling for {piece.name}'s archetype - should it even be moving?");
+            return true;
+        }
+
+        // TODO? Delete?
         public static Vector2Int ComputeMovement(Character character, Vector2 rawDirection)
         {
             var move = character.Movement.GetMove(rawDirection);
@@ -37,7 +80,7 @@ namespace GGJ
             }
 
             if (board.TryGetSpace(currentSpace + move, out var targetSpace)
-                && targetSpace.IsAvailableFor(character.Piece))
+                && CharacterCanMoveTo(character, targetSpace))
             {
                 return move;
             }
@@ -45,9 +88,6 @@ namespace GGJ
             return Vector2Int.zero;
         }
 
-        // TODO? May want to figure out how to fit a "PerformMove" coroutine in here
-        //       It's likely we want to play an animation or resolve effects during a move - should probably trigger
-        //       and wait for the resolution of any time-based components before resolving the move
         public static bool TryMove(Character character, Vector2Int move, out BoardSpace targetSpace)
         {
             EnsureCharacterRegistered(character);
@@ -56,7 +96,7 @@ namespace GGJ
 
             var moveTarget = board.GetSpace(character) + move;
             if (board.TryGetSpace(moveTarget, out targetSpace)
-                && targetSpace.IsAvailableFor(character.Piece))
+                && CharacterCanMoveTo(character, targetSpace))
             {
                 board.PlacePiece(character.Piece, targetSpace);
                 return true;

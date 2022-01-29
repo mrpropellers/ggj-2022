@@ -1,5 +1,5 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace GGJ.Utility
 {
@@ -23,5 +23,25 @@ namespace GGJ.Utility
                 Mathf.Approximately(vector.y, 0);
         }
 
+        public static int GridDistance(Vector2Int a, Vector2Int b)
+        {
+            var x = System.Math.Abs(a.x - b.x);
+            var y = System.Math.Abs(b.y - a.y);
+            return x + y;
+        }
+
+        public static Vector2 RandomDirection()
+        {
+            var x = Random.Range(-1f, 1f);
+            var y = Random.Range(-1f, 1f);
+            if (Mathf.Approximately(x, 0) && Mathf.Approximately(y, 0))
+            {
+                return Vector2.zero;
+            }
+
+            var direction = new Vector2(x, y);
+            direction.Normalize();
+            return direction;
+        }
     }
 }

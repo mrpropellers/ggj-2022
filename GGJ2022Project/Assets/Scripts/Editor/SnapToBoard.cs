@@ -75,6 +75,12 @@ namespace GGJ.Editor
             return Tools.handlePosition - ((SpriteRenderer) target).sprite.bounds.center;
         }
 
+        static bool SpaceCanHoldPiece(BoardSpace space, BoardPiece piece)
+        {
+            var stageStartingMode = StageState.Instance.StartingBoardMode;
+            return StageState.SpaceSupportsHoldingPiece(space, piece, stageStartingMode);
+        }
+
         public override void OnToolGUI(EditorWindow window)
         {
             if (m_TargetBoard == null)
@@ -106,13 +112,13 @@ namespace GGJ.Editor
 
             if (EditorGUI.EndChangeCheck())
             {
-                if (m_TargetBoard.TryGetSpace(newPosition, out var boardSpace) && boardSpace.CanHoldPieces)
+                if (m_TargetBoard.TryGetSpace(newPosition, out var boardSpace) && boardSpace.CanHoldTangible)
                 {
                     Undo.RecordObjects(Selection.transforms, "Move Piece");
                     var position = m_TargetBoard.GetWorldCoordinates(boardSpace);
                     Selection.transforms[0].position = position;
                     if (((SpriteRenderer) target).TryGetComponent<BoardPiece>(out var piece) &&
-                        boardSpace.IsAvailableFor(piece))
+                        SpaceCanHoldPiece(boardSpace, piece))
                     {
                         m_TargetBoard.PlacePiece(piece, boardSpace);
                     }

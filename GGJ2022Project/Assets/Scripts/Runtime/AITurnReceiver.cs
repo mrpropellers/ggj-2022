@@ -29,10 +29,9 @@ public class AITurnReceiver : TurnReceiver
     protected override IEnumerator HandleTurn_impl(Turn incomingTurn)
     {
         m_NumMovementFinished = 0;
-        var playerCharacter = StageState.Instance.PlayerCharacter;
         foreach (var unit in m_ControlledIntentions)
         {
-            unit.ProvideIntention(playerCharacter);
+            unit.ProvideIntention();
         }
         PhaseComplete(TurnPhase.WaitingForIntent);
         yield return new WaitUntil(() => NumControlled == m_NumMovementFinished);

@@ -4,11 +4,15 @@ using UnityEngine;
 namespace GGJ
 {
     [RequireComponent(typeof(BoardPiece))]
-    public class Item : MonoBehaviour
+    public class Item : MonoBehaviour, IBoardPiece
     {
         public Sprite InventorySprite;
 
         BoardPiece m_Piece;
+
+        public BoardPiece Piece => m_Piece;
+
+        public bool IsTangible => StageState.Instance.IsTangible(this);
 
         public void Awake()
         {

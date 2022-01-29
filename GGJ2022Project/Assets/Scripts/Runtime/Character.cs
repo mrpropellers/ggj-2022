@@ -7,7 +7,7 @@ using UnityEngine.Assertions;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(BoardPiece))]
-public class Character : MonoBehaviour
+public class Character : MonoBehaviour, IBoardPiece
 {
     // TODO? Intentions could probably be simplified -
     //      Remove this enum and just store memories as a vector corresponding to the move the character
@@ -89,10 +89,10 @@ public class Character : MonoBehaviour
     // TODO: This should depend on the characters movement rules, but we're locked into "Simple" for now
     public bool CanMoveTo(Vector2Int cellCoordinates) =>
         StageState.Instance.ActiveBoard.TryGetSpace(cellCoordinates, out var space)
-        && space.IsAvailableFor(this);
+        && BoardNavigation.CharacterCanMoveTo(this, space);
 
 
-    public static implicit operator BoardPiece(Character character) => character.Piece;
+    public static implicit operator BoardPiece(Character character) => character?.Piece;
 
     public void Awake()
     {
@@ -219,7 +219,6 @@ public class Character : MonoBehaviour
             return false;
         }
         var startPosition = transform.position;
-        // TODO: Register this as a callback to a "TurnExecutor" - let it decide when movement executes
         if (BoardNavigation.TryMove(this, direction, out var space))
         {
             PerformWorldMovement(startPosition, space.CoordinatesWorld);

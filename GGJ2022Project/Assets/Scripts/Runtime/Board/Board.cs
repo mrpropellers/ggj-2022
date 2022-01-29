@@ -8,6 +8,7 @@ using UnityEngine.Tilemaps;
 using UnityEngine.Assertions;
 
 using GGJ.Utility;
+using GGJ.Utility.Runtime.Utility;
 using GGJ.Utility.Utility;
 
 namespace GGJ
@@ -178,9 +179,9 @@ namespace GGJ
             }
         }
 
-        void Start()
+        void Awake()
         {
-            StartCoroutine(ConstructBoardSpaces());
+            UnityHelpers.DoCoroutineImmediately(ConstructBoardSpaces());
         }
 
         // Update is called once per frame
@@ -222,6 +223,16 @@ namespace GGJ
 
             var position = new Vector3Int(space.CoordinatesGrid.x, space.CoordinatesGrid.y, 0);
             return m_Grid.GetCellCenterWorld(position);
+        }
+
+        public Vector3 GetWorldCoordinates(BoardPiece piece)
+        {
+            return GetWorldCoordinates(GetSpace(piece));
+        }
+
+        public Vector2Int GetCellCoordinates(BoardPiece piece)
+        {
+            return GetSpace(piece).CoordinatesGrid;
         }
 
         public bool TryGetSpace(Vector2Int positionGrid, out BoardSpace space)
@@ -287,14 +298,10 @@ namespace GGJ
         // Put decision trees and other state checking in the MovementHandler or wherever else makes most sense
         public void PlacePiece(BoardPiece piece, BoardSpace targetSpace)
         {
-            Assert.IsTrue(targetSpace.IsAvailableFor(piece),
-                $"{piece.name} can not be placed at {targetSpace.CoordinatesGrid} - " +
-                $"be sure to check availability before placing.");
             Assert.IsTrue(m_BoardSpaces.Contains(targetSpace) && targetSpace.ParentBoard == this,
                 $"{name} is not keeping track of the space at {targetSpace.CoordinatesGrid} - " +
                 $"{nameof(targetSpace)} says its parent is {targetSpace.ParentBoard}.");
 
-            string logMessage;
             if (TryGetSpace(piece, out var spaceCurrent))
             {
                 spaceCurrent.Remove(piece);
