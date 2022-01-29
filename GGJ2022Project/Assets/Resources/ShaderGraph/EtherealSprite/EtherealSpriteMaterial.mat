@@ -71,9 +71,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _EnableExternalAlpha: 0
-    - _OutlineStrength: 0
+    - _OutlineStrength: 0.637
     - _PulseFrequency: 1
-    - _PulseStrength: 0
+    - _PulseStrength: 0.037
     - _PulseVariance: 0.1
     - _Saturation: 0.331
     - _ShimmerStrength: 0.68
