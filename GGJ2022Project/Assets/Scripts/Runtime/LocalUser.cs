@@ -34,15 +34,6 @@ namespace GGJ
         }
         #endregion
 
-        public static LocalUser firstInstance
-        {
-            get
-            {
-                var instances = InstanceTracker<LocalUser>.GetInstancesReadOnly();
-                return (instances.Count == 0) ? null : instances[0];
-            }
-        }
-
         // For now, since the player turn receiver spawns from the scene instead of through our own logic, we have to assume there's only one, listen for it to spawn, and take ownership of it from there.
         private void OnPlayerTurnReceiverDiscovered(PlayerTurnReceiver discoveredPlayerTurnReciever)
         {
