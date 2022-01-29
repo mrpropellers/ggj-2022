@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 namespace GGJ
@@ -6,6 +6,8 @@ namespace GGJ
     [RequireComponent(typeof(BoardPiece))]
     public class Item : MonoBehaviour
     {
+        public Sprite InventorySprite;
+
         BoardPiece m_Piece;
 
         public void Awake()
