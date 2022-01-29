@@ -28,5 +28,10 @@ namespace GGJ.Utility
         {
             return instancesList;
         }
+
+        public static T GetFirstInstance()
+        {
+            return (instancesList.Count == 0) ? default : instancesList[0];
+        }
     }
 }
