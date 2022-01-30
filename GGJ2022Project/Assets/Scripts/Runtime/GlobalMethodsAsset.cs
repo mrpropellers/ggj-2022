@@ -23,5 +23,10 @@ namespace GGJ
         {
             Instantiate(InGameState.GetPrefab());
         }
+
+        public void DestroyObject(UnityEngine.Object obj)
+        {
+            Destroy(obj);
+        }
     }
 }
