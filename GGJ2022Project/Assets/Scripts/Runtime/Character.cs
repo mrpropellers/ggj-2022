@@ -54,6 +54,8 @@ public class Character : MonoBehaviour, IBoardPiece
     Queue<Memory> m_IntentBuffer;
     Intention? m_ActiveIntent;
 
+    public UnityEvent OnMovementAnimationStart;
+    public UnityEvent OnMovementAnimationFinish;
     public UnityEvent<Character> OnMovementFinished;
 
     [SerializeField]
@@ -183,6 +185,7 @@ public class Character : MonoBehaviour, IBoardPiece
 
     IEnumerator MoveInWorld(Vector3 start, Vector3 end)
     {
+        OnMovementAnimationStart?.Invoke();
         var direction = (end - start);
         var distance = direction.magnitude;
         if (Mathf.Approximately(distance, 0f))
@@ -202,6 +205,7 @@ public class Character : MonoBehaviour, IBoardPiece
         }
 
         transform.position = end;
+        OnMovementAnimationFinish?.Invoke();
         MarkMovementFinished();
     }
 
