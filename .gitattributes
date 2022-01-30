@@ -66,3 +66,4 @@
 ## Project
 ### TextMesh Pro
 "GGJ2022Project/Assets/TextMesh Pro/Resources/Fonts & Materials/*.asset" filter=lfs diff=lfs merge=lfs -text
+"GGJ2022Project/Assets/Fonts/**/TMP/*.asset" filter=lfs diff=lfs merge=lfs -text
