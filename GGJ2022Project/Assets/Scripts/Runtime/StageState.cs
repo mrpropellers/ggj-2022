@@ -27,6 +27,8 @@ namespace GGJ
             Spiritual
         }
 
+        EffectsManager m_EffectsManager;
+
         [SerializeField]
         internal BoardMode StartingBoardMode;
 
@@ -40,6 +42,7 @@ namespace GGJ
         void Awake()
         {
             EnsureInitialized();
+            m_EffectsManager = FindObjectOfType<EffectsManager>();
         }
 
         void ToggleBoardMode()
@@ -85,6 +88,7 @@ namespace GGJ
         {
             OnRealmSwitchStart?.Invoke();
             ToggleBoardMode();
+            yield return m_EffectsManager.SetRealmEffects();
             OnRealmSwitchFinish?.Invoke();
             yield break;
         }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using GGJ.GlobalConsts;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Tilemaps;
@@ -19,11 +20,16 @@ namespace GGJ
         Grid m_Grid;
         BoardSpace[] m_BoardSpaces;
         BoundsInt m_BoardBounds;
+        Tilemap m_EtherealTilemap;
 
         [SerializeField]
-        List<TileBase> m_MapTiles;
+        TileBase m_EarthlyMapTile;
         [SerializeField]
-        List<TileBase> m_BlockingTiles;
+        TileBase m_EtherealMapTile;
+        [SerializeField]
+        TileBase m_EarthlyBlockingTile;
+        [SerializeField]
+        TileBase m_EtherealBlockingTile;
 
         // Each piece can only occupy one space (although one space can hold many pieces)
         // Keep track of which space each piece is on so we don't have to do a bunch of math every time
@@ -61,11 +67,11 @@ namespace GGJ
                 if (tile != null)
                 {
                     hasATile = true;
-                    if (m_BlockingTiles.Contains(tile))
+                    if (m_EarthlyBlockingTile == tile)
                     {
                         isBlocked = true;
                     }
-                    else if (m_MapTiles.Contains(tile))
+                    else if (m_EarthlyMapTile == tile)
                     {
                         hasMapTile = true;
                     }
@@ -95,9 +101,10 @@ namespace GGJ
         // into a collection of BoardSpaces
         public IEnumerator ConstructBoardSpaces(object coroutineYield = null)
         {
-            if (m_MapTiles.Count == 0)
+            if (m_EarthlyMapTile == null || m_EarthlyBlockingTile == null ||
+                m_EtherealMapTile == null || m_EtherealBlockingTile == null)
             {
-                Debug.LogError($"Can't construct map because you haven't defined any {(m_MapTiles)}");
+                Debug.LogError($"Can't construct map because you haven't defined all of the tiles yet.");
                 yield break;
             }
 
@@ -132,6 +139,15 @@ namespace GGJ
             var tileStack = new List<TileBase>();
             m_BoardSpaces = new BoardSpace[numRows * numColumns];
             m_BoardBounds = new BoundsInt(minX, minY, 0, numColumns, numRows, 0);
+            if (Application.isPlaying)
+            {
+                var etherealGo = new GameObject(Names.EtherealTilemap);
+                etherealGo.transform.parent = transform;
+                m_EtherealTilemap = etherealGo.AddComponent<Tilemap>();
+                // Because we're adding the Tilemap from code, this doesn't get added automatically...
+                var renderer = etherealGo.AddComponent<TilemapRenderer>();
+                renderer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+            }
             for (var i = 0; i < numColumns; ++i)
             {
                 for (var j = 0; j < numRows; ++j)
@@ -154,9 +170,28 @@ namespace GGJ
                     var space = new BoardSpace(this, x, y, flavor);
                     var index = QuickMaths.IJToIndex(numColumns, i, j);
                     m_BoardSpaces[index] = space;
-
                     OnBoardSpaceConstructed?.Invoke(this, space);
                     yield return coroutineYield;
+                    if (!Application.isPlaying)
+                    {
+                        continue;
+                    }
+
+                    switch (flavor)
+                    {
+                        case BoardSpace.Flavor.Normal:
+                            m_EtherealTilemap.SetTile(new Vector3Int(x, y), m_EtherealMapTile);
+                            break;
+                        case BoardSpace.Flavor.Wall:
+                            m_EtherealTilemap.SetTile(new Vector3Int(x, y), m_EtherealBlockingTile);
+                            break;
+                        case BoardSpace.Flavor.Unknown:
+                        case BoardSpace.Flavor.Null:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException(
+                                $"No handling defined for {flavor}");
+                    }
                 }
             }
 

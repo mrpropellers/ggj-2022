@@ -13,6 +13,11 @@ namespace GGJ.GlobalConsts
         };
     }
 
+    public static class Names
+    {
+        public const string EtherealTilemap = "EtherealTilemap";
+    }
+
     public static class SortingLayers
     {
         // TODO: Add "Decoration" layer between normal and foreground
