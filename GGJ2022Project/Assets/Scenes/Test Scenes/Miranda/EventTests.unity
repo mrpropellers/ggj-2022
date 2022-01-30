@@ -571,6 +571,86 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9150051876887135559, guid: 52c609cafea01a1429582ab3643dc06b,
+        type: 3}
+      propertyPath: OnMovementAnimationStart.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150051876887135559, guid: 52c609cafea01a1429582ab3643dc06b,
+        type: 3}
+      propertyPath: OnMovementAnimationFinish.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150051876887135559, guid: 52c609cafea01a1429582ab3643dc06b,
+        type: 3}
+      propertyPath: OnMovementAnimationStart.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150051876887135559, guid: 52c609cafea01a1429582ab3643dc06b,
+        type: 3}
+      propertyPath: OnMovementAnimationFinish.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150051876887135559, guid: 52c609cafea01a1429582ab3643dc06b,
+        type: 3}
+      propertyPath: OnMovementAnimationStart.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 868136997}
+    - target: {fileID: 9150051876887135559, guid: 52c609cafea01a1429582ab3643dc06b,
+        type: 3}
+      propertyPath: OnMovementAnimationFinish.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 868136997}
+    - target: {fileID: 9150051876887135559, guid: 52c609cafea01a1429582ab3643dc06b,
+        type: 3}
+      propertyPath: OnMovementAnimationStart.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150051876887135559, guid: 52c609cafea01a1429582ab3643dc06b,
+        type: 3}
+      propertyPath: OnMovementAnimationFinish.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150051876887135559, guid: 52c609cafea01a1429582ab3643dc06b,
+        type: 3}
+      propertyPath: OnMovementAnimationStart.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetTrigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150051876887135559, guid: 52c609cafea01a1429582ab3643dc06b,
+        type: 3}
+      propertyPath: OnMovementAnimationFinish.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetTrigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150051876887135559, guid: 52c609cafea01a1429582ab3643dc06b,
+        type: 3}
+      propertyPath: OnMovementAnimationStart.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UnityEngine.Animator, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150051876887135559, guid: 52c609cafea01a1429582ab3643dc06b,
+        type: 3}
+      propertyPath: OnMovementAnimationFinish.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UnityEngine.Animator, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150051876887135559, guid: 52c609cafea01a1429582ab3643dc06b,
+        type: 3}
+      propertyPath: OnMovementAnimationStart.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: StartHop
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150051876887135559, guid: 52c609cafea01a1429582ab3643dc06b,
+        type: 3}
+      propertyPath: OnMovementAnimationFinish.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: StopHop
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150051876887135559, guid: 52c609cafea01a1429582ab3643dc06b,
+        type: 3}
+      propertyPath: OnMovementAnimationStart.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150051876887135559, guid: 52c609cafea01a1429582ab3643dc06b,
+        type: 3}
+      propertyPath: OnMovementAnimationFinish.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 9150051876887135562, guid: 52c609cafea01a1429582ab3643dc06b,
         type: 3}
       propertyPath: m_Name
@@ -578,6 +658,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 52c609cafea01a1429582ab3643dc06b, type: 3}
+--- !u!95 &868136997 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 923409137990113218, guid: 52c609cafea01a1429582ab3643dc06b,
+    type: 3}
+  m_PrefabInstance: {fileID: 868136996}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &868876686
 GameObject:
   m_ObjectHideFlags: 0
@@ -948,7 +1034,7 @@ PrefabInstance:
     - target: {fileID: 5694441976668087314, guid: 25e3627e73f442d4d86c2d22dd9bcd93,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 48.366142
+      value: 11.298701
       objectReference: {fileID: 0}
     - target: {fileID: 5694441976668087314, guid: 25e3627e73f442d4d86c2d22dd9bcd93,
         type: 3}
@@ -1023,12 +1109,22 @@ PrefabInstance:
     - target: {fileID: 8994234964514144419, guid: 25e3627e73f442d4d86c2d22dd9bcd93,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.x
-      value: 0
+      value: -0.5344828
       objectReference: {fileID: 0}
     - target: {fileID: 8994234964514144419, guid: 25e3627e73f442d4d86c2d22dd9bcd93,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.y
-      value: 0
+      value: -0.27849928
+      objectReference: {fileID: 0}
+    - target: {fileID: 8994234964514144419, guid: 25e3627e73f442d4d86c2d22dd9bcd93,
+        type: 3}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 2.0689654
+      objectReference: {fileID: 0}
+    - target: {fileID: 8994234964514144419, guid: 25e3627e73f442d4d86c2d22dd9bcd93,
+        type: 3}
+      propertyPath: m_NormalizedViewPortRect.height
+      value: 1.5584415
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25e3627e73f442d4d86c2d22dd9bcd93, type: 3}
