@@ -5,6 +5,8 @@ using UnityEngine;
 
 namespace GGJ
 {
+    // NOTE: This class is conflating two concepts... MovementRULES which dictate concretely which
+    //       tiles are available for a Character move
     [CreateAssetMenu]
     public class CharacterMovementRules : ScriptableObject
     {
