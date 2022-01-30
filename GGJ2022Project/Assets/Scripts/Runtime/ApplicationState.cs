@@ -1,4 +1,5 @@
 using UnityEngine;
+using GGJ.Utility;
 
 namespace GGJ
 {
@@ -10,27 +11,12 @@ namespace GGJ
         #endregion
 
         #region Instance Management
-        static ApplicationState s_Instance;
-
-        public static ApplicationState Instance
-        {
-            get
-            {
-                if (s_Instance == null)
-                {
-                    Debug.LogWarning($"{nameof(ApplicationState)} was not initialized before being accessed.");
-                }
-
-                return s_Instance;
-            }
-        }
+        public static ApplicationState Instance => SingletonHelper<ApplicationState>.Singleton;
 
         [RuntimeInitializeOnLoadMethod(loadType: RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Init()
         {
-            GameObject instanceGameObject = Instantiate(Resources.Load<GameObject>("Prefabs/ApplicationState"));
-            s_Instance = instanceGameObject.GetComponent<ApplicationState>();
-            DontDestroyOnLoad(instanceGameObject);
+            Instantiate(Resources.Load<GameObject>("Prefabs/ApplicationState"));
         }
         #endregion
 
@@ -41,12 +27,18 @@ namespace GGJ
             var inGameStateInstance = Instantiate(InGameStatePrefab);
             DontDestroyOnLoad(inGameStateInstance);
         }
+
+        private void OnEnable()
+        {
+            SingletonHelper<ApplicationState>.HandleInstanceEnabled(this);
+        }
+
+        private void OnDisable()
+        {
+            SingletonHelper<ApplicationState>.HandleInstanceDisabled(this);
+        }
         #endregion
 
         public Board ActiveBoard { get; set; }
-
-
-
-        
     }
 }
