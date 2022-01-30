@@ -56,6 +56,8 @@ public class Character : MonoBehaviour, IBoardPiece
 
     public UnityEvent OnMovementAnimationStart;
     public UnityEvent OnMovementAnimationFinish;
+    public UnityEvent OnInteract;
+    public UnityEvent OnIdleWave;
     public UnityEvent<Character> OnMovementFinished;
 
     [SerializeField]

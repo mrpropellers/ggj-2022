@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Events;
 
 namespace GGJ
 {
@@ -19,6 +20,7 @@ namespace GGJ
         [SerializeField]
         Tangibility m_Tangibility;
 
+        public UnityEvent OnInteractedWith;
         public Tangibility PieceTangibility
         {
             get => m_Tangibility;
