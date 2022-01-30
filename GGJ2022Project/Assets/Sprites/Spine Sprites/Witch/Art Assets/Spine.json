@@ -1,0 +1,30 @@
+{"skeleton":{"images":""},
+"bones":[{"name":"root"}],
+"slots":[
+	{"name":"Leg Right","bone":"root","attachment":"Leg Right"},
+	{"name":"Leg Left","bone":"root","attachment":"Leg Left"},
+	{"name":"Torso","bone":"root","attachment":"Torso"},
+	{"name":"Arm Left","bone":"root","attachment":"Arm Left"},
+	{"name":"Arm Right","bone":"root","attachment":"Arm Right"},
+	{"name":"Head","bone":"root","attachment":"Head"},
+	{"name":"Hair","bone":"root","attachment":"Hair"},
+	{"name":"Hat","bone":"root","attachment":"Hat"},
+	{"name":"Face","bone":"root","attachment":"Face"},
+	{"name":"01-24-2022_WitchFrontFacing_v01-TVD","bone":"root","attachment":"01-24-2022_WitchFrontFacing_v01-TVD"}
+],
+"skins":{
+	"default":{
+		"Leg Right":{"Leg Right":{"x":1711.5,"y":1016,"width":475,"height":678}},
+		"Leg Left":{"Leg Left":{"x":2472.5,"y":1033.5,"width":493,"height":643}},
+		"Torso":{"Torso":{"x":2092.5,"y":1774.5,"width":1865,"height":1165}},
+		"Arm Left":{"Arm Left":{"x":2760,"y":1942.5,"width":552,"height":785}},
+		"Arm Right":{"Arm Right":{"x":1380,"y":1910.5,"width":508,"height":815}},
+		"Head":{"Head":{"x":2071,"y":2320.5,"width":1496,"height":1397}},
+		"Hair":{"Hair":{"x":2084.5,"y":2430.5,"width":1539,"height":855}},
+		"Hat":{"Hat":{"x":2049,"y":3425,"width":1220,"height":1382}},
+		"Face":{"Face":{"x":2080,"y":2444.5,"width":678,"height":203}},
+		"01-24-2022_WitchFrontFacing_v01-TVD":{"01-24-2022_WitchFrontFacing_v01-TVD":{"x":2000,"y":2256,"width":4000,"height":4512}}
+	}
+},
+"animations":{"animation":{}}
+}
