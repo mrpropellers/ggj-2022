@@ -20,9 +20,10 @@ namespace GGJ
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName: sceneName);
         }
 
-        public void StartGame()
+        public void StartGame(string entrySceneName)
         {
-            Instantiate(InGameState.GetPrefab());
+            GameObject inGameStateGameObject = Instantiate(InGameState.GetPrefab());
+            inGameStateGameObject.GetComponent<InGameState>().EntrySceneName = entrySceneName;
         }
 
         public void StopGame()

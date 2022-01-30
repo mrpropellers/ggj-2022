@@ -22,8 +22,9 @@ namespace GGJ
         #region Engine Messages
         private void Start()
         {
+            StartedInMenu = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "MainMenu";
             // TODO: Instantiate InGameStatePrefab from someplace more appropriate, like the button on the main menu that starts the game.
-            if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "MainMenu")
+            if (!StartedInMenu)
             {
                 Instantiate(InGameState.GetPrefab());
             }
@@ -41,5 +42,6 @@ namespace GGJ
         #endregion
 
         public Board ActiveBoard { get; set; }
+        public bool StartedInMenu { get; private set; }
     }
 }

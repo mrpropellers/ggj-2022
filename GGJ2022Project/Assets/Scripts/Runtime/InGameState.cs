@@ -6,14 +6,19 @@ namespace GGJ
     public class InGameState : MonoBehaviour
     {
         #region Inspector Parameters
-        public string EntrySceneName;
-        public string ExitSceneName;
         #endregion
+
+        public string EntrySceneName { get; set; }
+        public string ExitSceneName { get; set; } = "MainMenu";
 
         #region Engine Messages
         private void Start()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName: EntrySceneName);
+            // Hacky condition to prevent immediate scene switch when entering a specific scene directly from entering play mode in editor.
+            if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "MainMenu")
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName: EntrySceneName);
+            }
         }
 
         private void OnDestroy()
