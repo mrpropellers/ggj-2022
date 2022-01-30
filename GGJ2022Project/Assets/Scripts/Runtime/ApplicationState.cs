@@ -6,7 +6,6 @@ namespace GGJ
     public class ApplicationState : MonoBehaviour
     {
         #region Inspector Parameters
-        public GameObject InGameStatePrefab;
         public RectTransform MainCanvasTransform;
         #endregion
 
@@ -24,8 +23,10 @@ namespace GGJ
         private void Start()
         {
             // TODO: Instantiate InGameStatePrefab from someplace more appropriate, like the button on the main menu that starts the game.
-            var inGameStateInstance = Instantiate(InGameStatePrefab);
-            DontDestroyOnLoad(inGameStateInstance);
+            if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "MainMenu")
+            {
+                Instantiate(InGameState.GetPrefab());
+            }
         }
 
         private void OnEnable()

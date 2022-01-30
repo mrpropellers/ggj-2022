@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5614222826673175562}
   - component: {fileID: -1655456411896778977}
+  - component: {fileID: 8176753509263416422}
   m_Layer: 0
   m_Name: InGameState
   m_TagString: Untagged
@@ -43,6 +44,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a29c38a9733c4dda88e24ff65430877e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EntrySceneName: MovementTests
+  ExitSceneName: MainMenu
+--- !u!114 &8176753509263416422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 592285352831565650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b993ba397d96c32479bf536a5ea12e33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &4340708915622552213
