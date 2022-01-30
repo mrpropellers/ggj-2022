@@ -31,9 +31,15 @@ namespace GGJ
             Destroy(SingletonHelper<InGameState>.Singleton);
         }
 
+        public void ResetGameStage()
+        {
+            SingletonHelper<InGameState>.Singleton.ResetStage();
+        }
+
         public void DestroyObject(UnityEngine.Object obj)
         {
             Destroy(obj);
         }
+
     }
 }
