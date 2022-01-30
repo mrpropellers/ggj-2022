@@ -30,6 +30,23 @@ namespace GGJ
         {
             SingletonHelper<InGameState>.HandleInstanceDisabled(this);
         }
+
+        private void Update()
+        {
+            bool pausePressed = false;
+            foreach (var playerInput in UnityEngine.InputSystem.PlayerInput.all)
+            {
+                if (playerInput.actions.FindActionMap("Player").FindAction("Pause").WasPressedThisFrame())
+                {
+                    pausePressed = true;
+                    break;
+                }
+            }
+            if (pausePressed)
+            {
+                UI.PauseMenuPanel.TogglePauseMenu();
+            }
+        }
         #endregion
 
         public static InGameState Singleton => SingletonHelper<InGameState>.Singleton;

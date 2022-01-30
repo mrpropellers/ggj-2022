@@ -1,4 +1,5 @@
 using UnityEngine;
+using GGJ.Utility;
 
 namespace GGJ
 {
@@ -22,6 +23,11 @@ namespace GGJ
         public void StartGame()
         {
             Instantiate(InGameState.GetPrefab());
+        }
+
+        public void StopGame()
+        {
+            Destroy(SingletonHelper<InGameState>.Singleton);
         }
 
         public void DestroyObject(UnityEngine.Object obj)
