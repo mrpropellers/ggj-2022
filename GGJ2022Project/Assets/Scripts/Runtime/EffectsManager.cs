@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using GGJ;
 using GGJ.Utility.Runtime.Utility;
 using UnityEngine;
@@ -16,6 +17,10 @@ public class EffectsManager : MonoBehaviour
     BoardPiece[] m_AllBoardPieces;
 
     [SerializeField]
+    [Range(0f, 1f)]
+    float m_TransitionTime;
+
+    [SerializeField]
     SpriteRenderer m_FogEffect;
 
     // TODO: This should be defined as a ScriptableObject and which each Piece can reference -- some pieces
@@ -28,14 +33,18 @@ public class EffectsManager : MonoBehaviour
     void Start()
     {
         m_AllBoardPieces = FindObjectsOfType<BoardPiece>();
-        StageState.Instance.OnRealmSwitchFinish.AddListener(SetRealmEffects);
         InitializeEffects();
-        SetRealmEffects();
+        UnityHelpers.DoCoroutineImmediately(SetRealmEffects());
     }
 
     void OnValidate()
     {
         InitializeEffects();
+        if (m_TransitionTime < 0f)
+        {
+            Debug.LogWarning("Transition time can't be negative");
+            m_TransitionTime = 0f;
+        }
     }
 
     void InitializeEffects()
@@ -62,20 +71,39 @@ public class EffectsManager : MonoBehaviour
         }
     }
 
-    public void SetRealmEffects()
+    IEnumerator TransitionTo(StageState.BoardMode mode)
+    {
+        var mask = m_FogEffect.GetComponent<SpriteMask>();
+        var totalDelta = mode == StageState.BoardMode.Physical ? 1f : -1f;
+        var originalCutoff = mask.alphaCutoff;
+        var tAccumulated = 0f;
+        while (tAccumulated < 1f)
+        {
+            var t = Time.deltaTime / m_TransitionTime;
+            tAccumulated += t;
+            mask.alphaCutoff = originalCutoff + totalDelta * tAccumulated;
+            yield return null;
+        }
+
+        mask.alphaCutoff = Mathf.Clamp01(originalCutoff + totalDelta * tAccumulated);
+    }
+
+    public IEnumerator SetRealmEffects()
     {
         var mode = StageState.Instance.CurrentBoardMode;
-        switch (mode)
-        {
-            case StageState.BoardMode.Physical:
-                m_FogEffect.enabled = false;
-                break;
-            case StageState.BoardMode.Spiritual:
-                m_FogEffect.enabled = true;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException($"No handling for {mode}");
-        }
+        // NOTE: This can be handled via the sprite mask
+        //switch (mode)
+        //{
+        //    case StageState.BoardMode.Physical:
+        //        m_FogEffect.enabled = false;
+        //        break;
+        //    case StageState.BoardMode.Spiritual:
+        //        m_FogEffect.enabled = true;
+        //        break;
+        //    default:
+        //        throw new ArgumentOutOfRangeException($"No handling for {mode}");
+        //}
+        yield return TransitionTo(mode);
         SetAllBoardPieceMaterials(mode);
     }
 }
