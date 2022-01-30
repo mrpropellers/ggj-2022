@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 5d88d1e17bfeecd4482044234d5893c9
   - enabled: 1
-    path: Assets/Scenes/Test Scenes/Devin/MovementTests.unity
+    path: Assets/Scenes/Test Scenes/Devin/PlayerMovementTests.unity
     guid: 77058f41968ea13419d7bafecef47e4c
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 628b8475c4073864683efa67e3bfa485,
