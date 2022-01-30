@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SpiritRealm
   m_EditorClassIdentifier: 
   m_Sprites:
-  - {fileID: 21300000, guid: 8588c463c63c0cb468b6c421f6f3bccb, type: 3}
+  - {fileID: 21300000, guid: 9b8bb5743305d9a4891c38acf51e18fe, type: 3}
   - {fileID: 21300000, guid: a957d536a63a3114880a6a15ffc3cc1b, type: 3}
   - {fileID: 21300000, guid: 97be45c154b171541b5c20745c0d0f29, type: 3}
   - {fileID: 21300000, guid: 02e1b0533e62b5c43a86695773118a9e, type: 3}
@@ -21,10 +21,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 472062d92c6baaa44a803eca5dfe36d8, type: 3}
   - {fileID: 21300000, guid: 4512ca7b10aa3b04e9493aeb79d1c526, type: 3}
   - {fileID: 21300000, guid: 9275603ff8ca29943ab65267b6c869fb, type: 3}
-  - {fileID: 21300000, guid: f1a79a66a6835b04dbb0bf5cafb42d1e, type: 3}
+  - {fileID: 21300000, guid: 36710328e30c27d418d83acd7829d1be, type: 3}
   - {fileID: 21300000, guid: 959fe1ec1d3d44741a1ffacdae3e595b, type: 3}
   - {fileID: 21300000, guid: 5f3510b1c3b5e514d851c5b9f20b3b8e, type: 3}
   - {fileID: 21300000, guid: adbff0d915824244ca7df6974e4785b9, type: 3}
   - {fileID: 21300000, guid: 5597054d27aa9c24e81e7d325f6810c2, type: 3}
   - {fileID: 21300000, guid: e5a556e96a7a7d64fb6298a3b9565113, type: 3}
-  - {fileID: 21300000, guid: 8588c463c63c0cb468b6c421f6f3bccb, type: 3}
+  - {fileID: 21300000, guid: 9b8bb5743305d9a4891c38acf51e18fe, type: 3}

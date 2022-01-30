@@ -38,6 +38,9 @@ namespace GGJ
 
         public UnityEvent OnRealmSwitchStart;
         public UnityEvent OnRealmSwitchFinish;
+        // TODO: These will be invoked by a gameplay monitor that gets implemented once the oven is in
+        public UnityEvent OnLevelFailure;
+        public UnityEvent OnLevelSuccess;
 
         void Awake()
         {
