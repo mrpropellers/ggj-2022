@@ -70,18 +70,23 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AlphaNoiseAmplitude: 5
     - _EnableExternalAlpha: 0
+    - _Float: 0
     - _OutlineStrength: 0.637
-    - _PulseFrequency: 1
-    - _PulseStrength: 0.037
+    - _PulseFrequency: 0.5
+    - _PulseStrength: 0.37
     - _PulseVariance: 0.1
-    - _Saturation: 0.331
+    - _Saturation: 0.634
     - _ShimmerStrength: 0.68
     - _SquigglePower: 0.39
-    - _Transparency: 0.799
+    - _Transparency: 0.704
+    - _WaveAmplitude: 0.04
+    - _WaveFrequency: 1.2
+    - _WaveSpeed: 0.14
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _OutlineColor: {r: 0.24964403, g: 0.7753475, b: 0.9622642, a: 1}
+    - _OutlineColor: {r: 0, g: 11.74174, b: 12.668719, a: 0.8}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

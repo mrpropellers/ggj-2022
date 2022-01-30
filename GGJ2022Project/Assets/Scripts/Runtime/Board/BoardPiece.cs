@@ -13,7 +13,7 @@ namespace GGJ
             Spritual,
             Both,
             // TODO?
-            //Neither
+            Neither
         }
 
         [SerializeField]
