@@ -2629,7 +2629,7 @@ PrefabInstance:
     - target: {fileID: 5694441976668087314, guid: 25e3627e73f442d4d86c2d22dd9bcd93,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 14.451463
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5694441976668087314, guid: 25e3627e73f442d4d86c2d22dd9bcd93,
         type: 3}
@@ -2858,11 +2858,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9150051876887135558, guid: 52c609cafea01a1429582ab3643dc06b,
-        type: 3}
-      propertyPath: m_Tangibility
-      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9150051876887135562, guid: 52c609cafea01a1429582ab3643dc06b,
         type: 3}
