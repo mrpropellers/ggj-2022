@@ -13,23 +13,24 @@ namespace GGJ.Editor
     {
         const string k_Name = "Snap to Board";
 
-        [SerializeField]
-        GUIContent m_IconContent;
+        //[SerializeField]
+        //GUIContent m_IconContent;
 
-        [SerializeField]
-        Texture2D m_ToolIcon;
+        //[SerializeField]
+        //Texture2D m_ToolIcon;
         [SerializeField]
         Board m_TargetBoard;
 
         void OnEnable()
         {
-            m_IconContent = new GUIContent()
-            {
-                image = m_ToolIcon,
-                text = k_Name,
-                tooltip = k_Name
-            };
+            //m_IconContent = new GUIContent()
+            //{
+            //    image = m_ToolIcon,
+            //    text = k_Name,
+            //    tooltip = k_Name
+            //};
         }
+
 
         // TODO? Figure out how to get a custom icon working
         //public override GUIContent toolbarIcon => m_IconContent;
@@ -83,7 +84,7 @@ namespace GGJ.Editor
 
         public override void OnToolGUI(EditorWindow window)
         {
-            if (m_TargetBoard == null)
+            if (m_TargetBoard == null || target is not SpriteRenderer)
             {
                 return;
             }
@@ -95,7 +96,6 @@ namespace GGJ.Editor
             }
 
             EditorGUI.BeginChangeCheck();
-
 
             var pivotWorld = PivotPosition();
 

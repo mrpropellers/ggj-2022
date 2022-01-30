@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6843321949263061194}
   - component: {fileID: 6843321949263061193}
   - component: {fileID: 6843321949263061189}
+  - component: {fileID: 2107961879623876256}
   m_Layer: 0
   m_Name: Tuzardle
   m_TagString: Untagged
@@ -131,3 +132,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MotivationTangible: 0
   m_MotivationEthereal: 1
+  m_MotivationFallback: 1
+  m_WanderFreedom: 1
+--- !u!114 &2107961879623876256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6843321949263061192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a3bd60f9dbb427eaf6986e0948854c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AcceptedTags:
+  - Ingredient
+  m_OnItemAdd:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnItemRemove:
+    m_PersistentCalls:
+      m_Calls: []

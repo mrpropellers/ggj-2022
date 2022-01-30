@@ -61,7 +61,7 @@ namespace GGJ.UI
                     inventory.OnItemAdd.RemoveListener(OnInventoryItemAdded);
                     inventory.OnItemRemove.RemoveListener(OnInventoryItemRemove);
                 }
-                inventory = value;
+                m_inventory = value;
                 if (!ReferenceEquals(inventory, null))
                 {
                     inventory.OnItemAdd.AddListener(OnInventoryItemAdded);

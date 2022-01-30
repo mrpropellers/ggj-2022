@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
 
 namespace GGJ
 {
+    [RequireComponent(typeof(TurnSystem))]
     public class StageState : MonoBehaviour
     {
         static StageState s_Instance;
@@ -102,7 +102,7 @@ namespace GGJ
                 }
                 s_Instance.ActiveBoard = FindObjectOfType<Board>();
                 s_Instance.CurrentBoardMode = s_Instance.StartingBoardMode;
-                s_Instance.PlayerCharacter = FindObjectOfType<PlayerTurnReceiver>().PlayerCharacter;
+                s_Instance.PlayerCharacter = FindObjectOfType<PlayerTurnReceiver>()?.PlayerCharacter;
             }
         }
     }

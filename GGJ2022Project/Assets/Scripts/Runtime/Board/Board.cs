@@ -95,6 +95,12 @@ namespace GGJ
         // into a collection of BoardSpaces
         public IEnumerator ConstructBoardSpaces(object coroutineYield = null)
         {
+            if (m_MapTiles.Count == 0)
+            {
+                Debug.LogError($"Can't construct map because you haven't defined any {(m_MapTiles)}");
+                yield break;
+            }
+
             IsConstructing = true;
             OnNewBoard?.Invoke(this);
             m_Grid = GetComponent<Grid>();

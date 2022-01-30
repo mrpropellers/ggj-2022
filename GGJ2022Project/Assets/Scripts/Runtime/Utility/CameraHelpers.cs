@@ -15,7 +15,7 @@ namespace GGJ.Utility.Runtime.Utility
             var worldScreenWidth = worldScreenHeight / Screen.height * Screen.width;
 
             var sprite = renderer.sprite;
-            renderer.transform.position = Vector3.forward;
+            renderer.transform.position = Vector3.forward + camera.transform.position;
             renderer.transform.localScale = new Vector3(
                 worldScreenWidth / sprite.bounds.size.x,
                 worldScreenHeight / sprite.bounds.size.y, 1);

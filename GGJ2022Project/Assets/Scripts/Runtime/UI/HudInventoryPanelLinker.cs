@@ -61,7 +61,7 @@ namespace GGJ.UI
 
         private void TryLinkToHud()
         {
-            m_CurrentHud = GetComponentInParent<Hud>();
+            currentHud = GetComponentInParent<Hud>();
         }
 
         private void HandleHudDiscovered(Hud hud)

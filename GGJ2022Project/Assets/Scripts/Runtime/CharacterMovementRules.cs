@@ -10,7 +10,8 @@ namespace GGJ
     {
         public enum Flavor
         {
-            Simple
+            Simple,
+            FavorUnexploredFallbacks
         }
 
         [SerializeField]
