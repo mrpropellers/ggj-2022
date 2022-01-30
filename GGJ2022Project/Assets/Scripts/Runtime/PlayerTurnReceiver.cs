@@ -76,12 +76,22 @@ namespace GGJ
                 return;
             }
 
+            if (PlayerInputSuppressor.ShouldSuppressPlayerInput)
+            {
+                return;
+            }
+
             OnRealmSwitch();
         }
 
         public void OnMove(InputAction.CallbackContext context)
         {
             if (!context.action.WasPerformedThisFrame())
+            {
+                return;
+            }
+
+            if (PlayerInputSuppressor.ShouldSuppressPlayerInput)
             {
                 return;
             }
