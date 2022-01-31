@@ -39,6 +39,10 @@ namespace GGJ
                 .Where(piece => piece.GetComponent<T>() != null)
                 .Select(piece => piece.GetComponent<T>());
 
+        public IEnumerable<BoardPiece> GetAllPieces<T>() where T : MonoBehaviour
+            => m_PiecesHere
+                .Where(piece => piece.GetComponent<T>() != null);
+
         // Indicates whether this space could be moved into by the specified piece
         // TODO: Check status of pieces on space
 

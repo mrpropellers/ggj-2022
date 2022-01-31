@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7175190961676071649}
   - component: {fileID: 7175190961676071654}
   - component: {fileID: 3149046958133404989}
+  - component: {fileID: 1121878118891861086}
   m_Layer: 0
   m_Name: StageState
   m_TagString: Untagged
@@ -46,6 +47,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74bcaa3c5a664aa0ab654abc009d349c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StartingBoardMode: 0
+  OnRealmSwitchStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRealmSwitchFinish:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLevelFailure:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLevelIncomplete:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLevelSuccess:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &7175190961676071654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,5 +85,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37a0f46ce3994dbcb5f602d7948ca667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1121878118891861086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7175190961676071652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8d65ad5a44e492b87e20d761f3049f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

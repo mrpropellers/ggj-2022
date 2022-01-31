@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using GGJ.Utility;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -76,12 +77,22 @@ namespace GGJ
                 return;
             }
 
+            if (PlayerInputSuppressor.ShouldSuppressPlayerInput)
+            {
+                return;
+            }
+
             OnRealmSwitch();
         }
 
         public void OnMove(InputAction.CallbackContext context)
         {
             if (!context.action.WasPerformedThisFrame())
+            {
+                return;
+            }
+
+            if (PlayerInputSuppressor.ShouldSuppressPlayerInput)
             {
                 return;
             }
@@ -94,7 +105,13 @@ namespace GGJ
                 return;
             }
 
-            var intention = new Character.Intention(Character.Intent.Move, directionOnGrid);
+            var board = StageState.Instance.ActiveBoard;
+            var currentSpace = board.GetSpace(m_SelectedCharacter);
+            var targetSpace = board.GetSpace(currentSpace + directionOnGrid);
+
+            var intention = targetSpace.HasAny<Oven>()
+                ? new Character.Intention(directionOnGrid, targetSpace.GetAllPieces<Oven>().First())
+                : new Character.Intention(Character.Intent.Move, directionOnGrid);
             m_SelectedCharacter.ReceiveIntent(intention, false);
             if (CurrentPhase == TurnPhase.WaitingForIntent)
             {

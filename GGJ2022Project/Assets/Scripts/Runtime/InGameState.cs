@@ -1,5 +1,6 @@
 using UnityEngine;
 using GGJ.Utility;
+using System;
 
 namespace GGJ
 {
@@ -59,6 +60,11 @@ namespace GGJ
         public static GameObject GetPrefab()
         {
             return Resources.Load<GameObject>("Prefabs/InGameState");
+        }
+
+        public void ResetStage()
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName: UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         }
     }
 }

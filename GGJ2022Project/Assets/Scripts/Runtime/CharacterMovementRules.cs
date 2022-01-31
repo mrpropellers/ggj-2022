@@ -13,6 +13,7 @@ namespace GGJ
         public enum Flavor
         {
             Simple,
+            SimpleWithInteractions,
             FavorUnexploredFallbacks
         }
 
