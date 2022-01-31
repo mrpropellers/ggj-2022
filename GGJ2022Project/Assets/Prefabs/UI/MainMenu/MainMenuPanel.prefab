@@ -1677,6 +1677,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BackButton
       objectReference: {fileID: 0}
+    - target: {fileID: 944514962956906687, guid: 14de70513e9087f40aca688ee78522e6,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 1f14443d27c6fb847ba92abacc16921c, type: 3}
     - target: {fileID: 1453066290207411143, guid: 14de70513e9087f40aca688ee78522e6,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -2847,6 +2852,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BackButton
       objectReference: {fileID: 0}
+    - target: {fileID: 944514962956906687, guid: 14de70513e9087f40aca688ee78522e6,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 1f14443d27c6fb847ba92abacc16921c, type: 3}
     - target: {fileID: 1453066290207411143, guid: 14de70513e9087f40aca688ee78522e6,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -3268,6 +3278,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: QuitButton
       objectReference: {fileID: 0}
+    - target: {fileID: 944514962956906687, guid: 14de70513e9087f40aca688ee78522e6,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 1f14443d27c6fb847ba92abacc16921c, type: 3}
     - target: {fileID: 1453066290207411143, guid: 14de70513e9087f40aca688ee78522e6,
         type: 3}
       propertyPath: m_AnchorMax.y
