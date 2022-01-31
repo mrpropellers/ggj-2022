@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+#if UNITY_EDITOR 
+
+using UnityEngine;
 using UnityEditor;
 
 namespace GGJ.Editor
@@ -63,3 +65,5 @@ namespace GGJ.Editor
         }
     }
 }
+
+#endif

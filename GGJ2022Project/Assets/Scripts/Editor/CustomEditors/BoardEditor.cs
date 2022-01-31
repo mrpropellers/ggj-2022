@@ -1,6 +1,8 @@
-﻿using UnityEditor;
+#if UNITY_EDITOR 
+using UnityEditor;
 using Unity.EditorCoroutines.Editor;
 using UnityEngine;
+
 
 namespace GGJ.Editor.CustomEditors
 {
@@ -26,3 +28,5 @@ namespace GGJ.Editor.CustomEditors
         }
     }
 }
+
+#endif
