@@ -10,6 +10,12 @@ namespace GGJ
     {
         List<Item> m_AllIngredients;
 
+        [SerializeField]
+        GameObject m_LevelFailPrefab;
+
+        [SerializeField]
+        GameObject m_LevelSucceedPrefab;
+
         void Start()
         {
             var allItems = FindObjectsOfType<Item>();
@@ -27,6 +33,23 @@ namespace GGJ
                 {
                     inventory.OnItemAdd.AddListener(CheckForLoss);
                 }
+            }
+
+            StageState.Instance.OnLevelEndResolved.AddListener(InstantiateLevelEndPrefab);
+        }
+
+        void InstantiateLevelEndPrefab(StageState.LevelEndResult result)
+        {
+            switch (result)
+            {
+                case StageState.LevelEndResult.Failure:
+                    Instantiate(m_LevelFailPrefab);
+                    break;
+                case StageState.LevelEndResult.Success:
+                    Instantiate(m_LevelSucceedPrefab);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException($"No handling for {result}");
             }
         }
 

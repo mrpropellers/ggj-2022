@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4495837750796069742}
   - component: {fileID: 4495837750796069741}
   - component: {fileID: 4495837750796069740}
+  - component: {fileID: 8290721934294686478}
   m_Layer: 0
   m_Name: Sigil
   m_TagString: Untagged
@@ -98,3 +99,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Tangibility: 4
+  OnInteractedWith:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &8290721934294686478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4495837750796069730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 781fc102e5244e199620b0264c7c886d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

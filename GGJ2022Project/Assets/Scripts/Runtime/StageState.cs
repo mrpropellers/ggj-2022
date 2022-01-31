@@ -27,6 +27,12 @@ namespace GGJ
             Spiritual
         }
 
+        public enum LevelEndResult
+        {
+            Success,
+            Failure
+        }
+
         EffectsManager m_EffectsManager;
 
         [SerializeField]
@@ -38,24 +44,44 @@ namespace GGJ
 
         public UnityEvent OnRealmSwitchStart;
         public UnityEvent OnRealmSwitchFinish;
+        public UnityEvent OnRealmSwitchToPhysical;
+        public UnityEvent OnRealmSwitchToSpiritual;
         // TODO: These will be invoked by a gameplay monitor that gets implemented once the oven is in
         public UnityEvent OnLevelFailure;
         // When a player tries to interact with an oven without all their ingredients
         public UnityEvent OnLevelIncomplete;
         public UnityEvent OnLevelSuccess;
 
+        public UnityEvent<LevelEndResult> OnLevelEndResolved;
+
         void Awake()
         {
             EnsureInitialized();
             m_EffectsManager = FindObjectOfType<EffectsManager>();
+            OnLevelFailure.AddListener(() => ResolveLevelEnd(LevelEndResult.Failure));
+            OnLevelSuccess.AddListener(() => ResolveLevelEnd(LevelEndResult.Success));
         }
 
         void ToggleBoardMode()
         {
-            CurrentBoardMode = CurrentBoardMode == BoardMode.Physical
-                ? BoardMode.Spiritual
-                : BoardMode.Physical;
+            switch (CurrentBoardMode)
+            {
+                case BoardMode.Physical:
+                    CurrentBoardMode = BoardMode.Spiritual;
+                    OnRealmSwitchToSpiritual?.Invoke();
+                    break;
+                case BoardMode.Spiritual:
+                    CurrentBoardMode = BoardMode.Physical;
+                    OnRealmSwitchToPhysical?.Invoke();
+                    break;
+            }
             Debug.Log($"{nameof(CurrentBoardMode)} switched to {CurrentBoardMode}.");
+        }
+
+        void ResolveLevelEnd(LevelEndResult result)
+        {
+            // TODO: Wait for end of level stuff here like sound effects or animations
+            OnLevelEndResolved?.Invoke(result);
         }
 
         internal static bool IsTangible(BoardPiece piece, BoardMode mode)

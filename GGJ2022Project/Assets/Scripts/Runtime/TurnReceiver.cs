@@ -55,6 +55,7 @@ namespace GGJ
             // but that would inject an extra frame into every turn -
             //  which our speed-running community would complain about
             yield return HandleTurn_impl(incomingTurn);
+            yield return null;
             CurrentPhase = TurnPhase.InActive;
 
         }

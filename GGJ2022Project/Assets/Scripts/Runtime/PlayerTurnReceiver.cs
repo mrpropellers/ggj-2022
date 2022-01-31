@@ -123,7 +123,15 @@ namespace GGJ
         {
             Assert.AreEqual(m_SelectedCharacter, character,
                 $"{character.name} is not {m_SelectedCharacter.name} - something broke.");
-            PhaseComplete(TurnPhase.ResolvingIntent);
+            if (StageState.Instance.ActiveBoard.GetSpace(character).HasAny<Sigil>())
+            {
+                StageState.Instance.OnRealmSwitchFinish.AddListener(MarkRealmSwitchComplete);
+                StartCoroutine(StageState.Instance.InitiateRealmSwitch());
+            }
+            else
+            {
+                PhaseComplete(TurnPhase.ResolvingIntent);
+            }
         }
 
         void MarkRealmSwitchComplete()

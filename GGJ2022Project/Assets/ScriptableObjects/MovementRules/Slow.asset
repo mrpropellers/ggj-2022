@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Slow
   m_EditorClassIdentifier: 
   m_MovementFlavor: 0
-  m_MovementSpeed: 1.5
+  m_MovementSpeed: 2
