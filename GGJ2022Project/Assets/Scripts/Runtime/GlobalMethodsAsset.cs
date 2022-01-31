@@ -28,12 +28,12 @@ namespace GGJ
 
         public void StopGame()
         {
-            Destroy(SingletonHelper<InGameState>.Singleton);
+            Destroy(SingletonHelper<InGameState>.Singleton?.gameObject);
         }
 
         public void ResetGameStage()
         {
-            SingletonHelper<InGameState>.Singleton.ResetStage();
+            SingletonHelper<InGameState>.Singleton?.ResetStage();
         }
 
         public void DestroyObject(UnityEngine.Object obj)
