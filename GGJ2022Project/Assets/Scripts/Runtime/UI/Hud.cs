@@ -5,6 +5,20 @@ namespace GGJ.UI
 {
     public class Hud : MonoBehaviour
     {
+        #region Inspector Parameters
+        public GameObject GameObjectToActivateWhileObserving;
+        #endregion
+
+        #region Engine Messages
+        private void Update()
+        {
+            if (GameObjectToActivateWhileObserving)
+            {
+                GameObjectToActivateWhileObserving.SetActive((bool)ObservedCharacter);
+            }
+        }
+        #endregion
+
         #region Observed Character
         private Character m_ObservedCharacter;
         public Character ObservedCharacter {
