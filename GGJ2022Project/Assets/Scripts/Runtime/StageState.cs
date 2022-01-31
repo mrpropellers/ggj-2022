@@ -40,6 +40,8 @@ namespace GGJ
         public UnityEvent OnRealmSwitchFinish;
         // TODO: These will be invoked by a gameplay monitor that gets implemented once the oven is in
         public UnityEvent OnLevelFailure;
+        // When a player tries to interact with an oven without all their ingredients
+        public UnityEvent OnLevelIncomplete;
         public UnityEvent OnLevelSuccess;
 
         void Awake()

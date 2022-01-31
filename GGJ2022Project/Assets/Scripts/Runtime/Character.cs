@@ -14,14 +14,15 @@ public class Character : MonoBehaviour, IBoardPiece
     //      wants to make. "Intent" here is better represented by "Motivation" in the IntentionProvider
     public enum Intent
     {
-
-        Move
+        Move,
+        InteractInPlace
     }
 
     public struct Intention
     {
         public Intent Intent { get; }
         public Vector2Int Direction { get; internal set; }
+        public BoardPiece Target { get; internal set; }
 
         // TODO: Sanitize input by using different constructors for different Intents
         //       e.g. an Intent to stand still should never require a direction
@@ -29,6 +30,15 @@ public class Character : MonoBehaviour, IBoardPiece
         {
             Intent = intent;
             Direction = direction;
+            Target = null;
+        }
+
+        // Making big assumptions here... but doing this right is OUT OF SCOPE
+        public Intention(Vector2Int direction, BoardPiece target)
+        {
+            Intent = Intent.InteractInPlace;
+            Direction = direction;
+            Target = target;
         }
     }
 
@@ -162,6 +172,12 @@ public class Character : MonoBehaviour, IBoardPiece
                 {
                     MarkMovementFinished();
                 }
+                break;
+            case Intent.InteractInPlace:
+                // TODO: Error check to ensure this intent is still valid
+                OnInteract?.Invoke();
+                intention.Target.OnInteractedWith?.Invoke();
+                MarkMovementFinished();
                 break;
             default:
                 throw new ArgumentOutOfRangeException($"No handling for {intention.Intent}.");

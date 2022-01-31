@@ -15,6 +15,8 @@ namespace GGJ
 
         int m_CurrentTurnNumber;
 
+        public bool StageIsFinished { get; private set; }
+
         void OnEnable()
         {
             m_CurrentTurnNumber = 1;
@@ -28,6 +30,20 @@ namespace GGJ
                 StopCoroutine(m_TurnCoroutine);
                 m_TurnCoroutine = null;
             }
+        }
+
+        void Start()
+        {
+            StageIsFinished = false;
+            StageState.Instance.OnLevelFailure.AddListener(MarkStageFinished);
+            StageState.Instance.OnLevelSuccess.AddListener(MarkStageFinished);
+        }
+
+        void MarkStageFinished()
+        {
+            Debug.Log(
+                $"{nameof(TurnSystem)} on {name} acknowledges that this stage is finished.");
+            StageIsFinished = true;
         }
 
         TurnReceiver PickNextTurnReceiver()
@@ -48,7 +64,7 @@ namespace GGJ
 
         IEnumerator ProcessTurns()
         {
-            while (true)
+            while (!StageIsFinished)
             {
                 yield return null;
 
