@@ -1,11 +1,17 @@
 using UnityEngine;
 using GGJ.Utility;
+using UnityEngine.Events;
 
 namespace GGJ
 {
     [CreateAssetMenu(menuName = "GGJ/GlobalMethodsAsset")]
     public class GlobalMethodsAsset : ScriptableObject
     {
+        public UnityEvent OnEnterApplication;
+        public UnityEvent OnGameStart;
+        public UnityEvent OnGameQuit;
+        public UnityEvent OnGameStop;
+
         public void QuitApplication()
         {
 #if UNITY_EDITOR
@@ -20,15 +26,28 @@ namespace GGJ
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName: sceneName);
         }
 
+        public void EnterApplication()
+        {
+            OnEnterApplication?.Invoke();
+        }
+
         public void StartGame(string entrySceneName)
         {
+            OnGameStart?.Invoke();
             GameObject inGameStateGameObject = Instantiate(InGameState.GetPrefab());
             inGameStateGameObject.GetComponent<InGameState>().EntrySceneName = entrySceneName;
         }
 
         public void StopGame()
         {
+            OnGameStop?.Invoke();
             Destroy(SingletonHelper<InGameState>.Singleton?.gameObject);
+        }
+
+        public void QuitFromStageMenu()
+        {
+            OnGameQuit?.Invoke();
+            StopGame();
         }
 
         public void ResetGameStage()

@@ -406,25 +406,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3774922760399486705, guid: 25e3627e73f442d4d86c2d22dd9bcd93,
-        type: 3}
-      propertyPath: m_CropFrame
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3774922760399486705, guid: 25e3627e73f442d4d86c2d22dd9bcd93,
-        type: 3}
-      propertyPath: m_RefResolutionX
-      value: 1920
-      objectReference: {fileID: 0}
-    - target: {fileID: 3774922760399486705, guid: 25e3627e73f442d4d86c2d22dd9bcd93,
-        type: 3}
-      propertyPath: m_RefResolutionY
-      value: 1080
-      objectReference: {fileID: 0}
     - target: {fileID: 5694441976668087314, guid: 25e3627e73f442d4d86c2d22dd9bcd93,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 4.468344
+      value: 11.25
       objectReference: {fileID: 0}
     - target: {fileID: 8994234964514144348, guid: 25e3627e73f442d4d86c2d22dd9bcd93,
         type: 3}

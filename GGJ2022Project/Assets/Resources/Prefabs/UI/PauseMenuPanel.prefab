@@ -896,7 +896,7 @@ PrefabInstance:
     - target: {fileID: 6905917231445603624, guid: 14de70513e9087f40aca688ee78522e6,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: StopGame
+      value: QuitFromStageMenu
       objectReference: {fileID: 0}
     - target: {fileID: 6905917231445603624, guid: 14de70513e9087f40aca688ee78522e6,
         type: 3}
